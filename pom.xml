@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <groupId>uk.ac.gate.plugins</groupId>
+  <artifactId>format-bdoc</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <name>Format Bdoc</name>
+  <description>
+Plugin to save/load GATE documents in BasicDocument representation as JSON and ...
+</description>
+  <url>https://gatenlp.github.io/gateplugin-Format_Bdoc/</url>
+  <organization>
+    <name>GATE</name>
+    <url>http://gate.ac.uk</url>
+  </organization>
+  <developers>
+    <developer>
+      <name>Johann Petrak</name>
+      <email>johann.petrak@gmail.com</email>
+      <organization>GATE Team</organization>
+      <organizationUrl>https://gate.ac.uk</organizationUrl>
+    </developer>
+    <developer>
+      <id>gate-team</id>
+      <name>GATE Team</name>
+      <email>gate-developers@lists.sourceforge.net</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/GateNLP/gateplugin-Format_Bdoc.git</connection>
+    <developerConnection>scm:git:git@github.com:GateNLP/gateplugin-Format_Bdoc.git</developerConnection>
+    <url>https://github.com/GateNLP/gateplugin-Format_Bdoc</url>
+  </scm>
+  <parent>
+    <groupId>uk.ac.gate</groupId>
+    <artifactId>gate-plugin-base</artifactId>
+    <version>8.6</version>
+    <relativePath/>
+  </parent>
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <gate-core.version>8.6</gate-core.version>
+  </properties>
+  <licenses>
+    <license>
+      <!-- this is the license we usually use for plugins but feel free to change 
+				this if you feel a different license would be more suitable for your plugin -->
+      <name>GNU Lesser General Public License (LGPL), Version 3</name>
+      <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <dependencies>
+    <!-- GCP API for the output handler - provided since the handler
+			will only be used when running in GCP -->
+    <dependency>
+      <groupId>uk.ac.gate</groupId>
+      <artifactId>gcp-api</artifactId>
+      <version>3.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>uk.ac.gate.libraries</groupId>
+      <artifactId>basicdocument</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  <modelVersion>4.0.0</modelVersion>
+</project>
