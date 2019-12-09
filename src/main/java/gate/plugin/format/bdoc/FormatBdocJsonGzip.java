@@ -1,5 +1,6 @@
 package gate.plugin.format.bdoc;
 
+import java.io.*;
 import gate.*;
 import gate.Resource;
 import gate.corpora.DocumentContentImpl;
@@ -13,17 +14,19 @@ import gate.lib.basicdocument.GateDocumentUpdater;
 import gate.lib.basicdocument.docformats.SimpleJson;
 import gate.util.DocumentFormatException;
 import gate.util.InvalidOffsetException;
+import java.net.URL;
+import java.util.zip.GZIPInputStream;
 import org.apache.log4j.Logger;
 
 @CreoleResource(
-        name = "GATE Bdoc-Json Format", 
+        name = "GATE Gzipped Bdoc-Json Format", 
         isPrivate = true,
         autoinstances = {@AutoInstance(hidden = true)},
-        comment = "Support for JSON-serialised GATE basic document",
+        comment = "Support for JSON-serialised GATE basic document, GZIP compressed",
         helpURL = ""
 )
-public class FormatBdocJson extends DocumentFormat {
-  private static final long serialVersionUID = 687802003643563918L;
+public class FormatBdocJsonGzip extends DocumentFormat {
+  private static final long serialVersionUID = 687845503643563918L;
   
   @Override
   public Boolean supportsRepositioning() {
@@ -40,10 +43,10 @@ public class FormatBdocJson extends DocumentFormat {
    */
 @Override
   public Resource init() throws ResourceInstantiationException {
-    MimeType mime = new MimeType("text", "bdocjson");
+    MimeType mime = new MimeType("text", "bdocjson+gzip");
     mimeString2ClassHandlerMap.put(mime.getType() + "/" + mime.getSubtype(),this);
     mimeString2mimeTypeMap.put(mime.getType() + "/" + mime.getSubtype(), mime);
-    suffixes2mimeTypeMap.put("bdocjson", mime);
+    suffixes2mimeTypeMap.put("bdocjson.gz", mime);
     setMimeType(mime);
     return this;
   }
@@ -57,7 +60,7 @@ public class FormatBdocJson extends DocumentFormat {
     MimeType mime = getMimeType();  
     mimeString2ClassHandlerMap.remove(mime.getType() + "/" + mime.getSubtype());
     mimeString2mimeTypeMap.remove(mime.getType() + "/" + mime.getSubtype());  
-    suffixes2mimeTypeMap.remove("bdocjson");
+    suffixes2mimeTypeMap.remove("bdocjson.gz");
   }
   
   /**
@@ -67,8 +70,27 @@ public class FormatBdocJson extends DocumentFormat {
    */
   @Override
   public void unpackMarkup(Document dcmnt) throws DocumentFormatException {
+    URL sourceURL = dcmnt.getSourceUrl();
+    if(sourceURL == null) {
+      throw new DocumentFormatException("Cannot create document, no sourceURL");
+    }
+    String json;
+    try (
+            InputStream urlStream = sourceURL.openStream();
+            InputStreamReader isr =
+                    new InputStreamReader(new GZIPInputStream(urlStream));
+            BufferedReader br = new BufferedReader(isr);
+            ) {
+      StringBuilder sb = new StringBuilder();
+      String line;
+      while(null != (line = br.readLine())) {
+        sb.append(line);
+      }
+      json = sb.toString();
+    } catch (Exception ex) {
+      throw new DocumentFormatException("Exception when trying to read the document "+sourceURL,ex);
+    }
     SimpleJson sj = new SimpleJson();
-    String json = dcmnt.getContent().toString();
     BdocDocument bdoc = sj.loads_doc(json);
     DocumentContent newContent = new DocumentContentImpl(bdoc.text);
     try {

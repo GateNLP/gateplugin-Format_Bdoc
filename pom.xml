@@ -3,7 +3,7 @@
   <groupId>uk.ac.gate.plugins</groupId>
   <artifactId>format-bdoc</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Format Bdoc</name>
+  <name>Format: Bdoc</name>
   <description>
     Plugin to save/load GATE documents in BasicDocument representation as JSON and ...
   </description>
@@ -43,8 +43,6 @@
   </properties>
   <licenses>
     <license>
-      <!-- this is the license we usually use for plugins but feel free to change 
-				this if you feel a different license would be more suitable for your plugin -->
       <name>GNU Lesser General Public License (LGPL), Version 3</name>
       <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
       <distribution>repo</distribution>
@@ -57,11 +55,55 @@
       <groupId>uk.ac.gate</groupId>
       <artifactId>gcp-api</artifactId>
       <version>3.0-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>uk.ac.gate</groupId>
+          <artifactId>gate-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>uk.ac.gate.libraries</groupId>
       <artifactId>basicdocument</artifactId>
       <version>0.1-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>uk.ac.gate</groupId>
+          <artifactId>gate-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   <modelVersion>4.0.0</modelVersion>
