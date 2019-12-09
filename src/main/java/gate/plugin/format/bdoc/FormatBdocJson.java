@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
         isPrivate = true,
         autoinstances = {@AutoInstance(hidden = true)},
         comment = "Support for JSON-serialised GATE basic document",
-        helpURL = ""
+        helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
 public class FormatBdocJson extends DocumentFormat {
   private static final long serialVersionUID = 687802003643563918L;

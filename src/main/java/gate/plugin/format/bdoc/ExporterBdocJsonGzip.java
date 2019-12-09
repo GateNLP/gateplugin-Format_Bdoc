@@ -41,7 +41,7 @@ import java.util.zip.GZIPOutputStream;
         tool = true, 
         autoinstances = @AutoInstance, 
         comment = "Export GATE documents in Gzipped Bdoc/Json format.", 
-        helpURL = ""
+        helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
 public class ExporterBdocJsonGzip extends DocumentExporter {
 

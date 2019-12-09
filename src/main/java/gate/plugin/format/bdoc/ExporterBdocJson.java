@@ -40,7 +40,7 @@ import gate.lib.basicdocument.docformats.SimpleJson;
         tool = true, 
         autoinstances = @AutoInstance, 
         comment = "Export GATE documents in Bdoc/Json format.", 
-        helpURL = ""
+        helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
 public class ExporterBdocJson extends DocumentExporter {
 

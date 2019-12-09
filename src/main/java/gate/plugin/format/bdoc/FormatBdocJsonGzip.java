@@ -34,7 +34,6 @@ import gate.lib.basicdocument.docformats.SimpleJson;
 import gate.util.DocumentFormatException;
 import gate.util.InvalidOffsetException;
 import java.net.URL;
-import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 import org.apache.log4j.Logger;
 
@@ -43,7 +42,7 @@ import org.apache.log4j.Logger;
         isPrivate = true,
         autoinstances = {@AutoInstance(hidden = true)},
         comment = "Support for JSON-serialised GATE basic document, GZIP compressed",
-        helpURL = ""
+        helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
 public class FormatBdocJsonGzip extends DocumentFormat {
   private static final long serialVersionUID = 687845503643563918L;
