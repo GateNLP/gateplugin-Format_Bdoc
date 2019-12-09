@@ -55,8 +55,6 @@ public class ExporterBdocJsonGzip extends DocumentExporter {
     BdocDocument bdoc = builder.buildBdoc();
     try ( GZIPOutputStream gos = new GZIPOutputStream(out)) {
       sj.dump(bdoc, gos);
-    } catch(Exception e) {
-      throw new IOException(e);
     }
     
   }

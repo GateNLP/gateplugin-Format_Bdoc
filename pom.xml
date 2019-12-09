@@ -106,5 +106,23 @@
       </exclusions>
     </dependency>
   </dependencies>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>3.0.3</version>
+        <configuration>
+          <findbugsXmlOutput>true</findbugsXmlOutput>
+          <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+          <excludeFilterFile>src/build/resources/findbugs-excluded.xml</excludeFilterFile>
+          <xmlOutput>true</xmlOutput>
+          <effort>Max</effort>
+          <threshold>Low</threshold>
+          <maxHeap>1024</maxHeap>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
   <modelVersion>4.0.0</modelVersion>
 </project>

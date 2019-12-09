@@ -15,6 +15,7 @@ import gate.lib.basicdocument.docformats.SimpleJson;
 import gate.util.DocumentFormatException;
 import gate.util.InvalidOffsetException;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 import org.apache.log4j.Logger;
 
@@ -87,7 +88,7 @@ public class FormatBdocJsonGzip extends DocumentFormat {
         sb.append(line);
       }
       json = sb.toString();
-    } catch (Exception ex) {
+    } catch (IOException ex) { 
       throw new DocumentFormatException("Exception when trying to read the document "+sourceURL,ex);
     }
     SimpleJson sj = new SimpleJson();
