@@ -2,6 +2,7 @@ package gate.plugin.format.bdoc;
 
 import gate.*;
 import gate.Resource;
+import gate.corpora.DocumentContentImpl;
 import gate.corpora.MimeType;
 import gate.corpora.RepositioningInfo;
 import gate.creole.ResourceInstantiationException;
@@ -11,14 +12,14 @@ import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.GateDocumentUpdater;
 import gate.lib.basicdocument.docformats.SimpleJson;
 import gate.util.DocumentFormatException;
-import java.io.InputStream;
+import gate.util.InvalidOffsetException;
 import java.net.URL;
 import org.apache.log4j.Logger;
 
 @CreoleResource(
         name = "GATE Bdoc-Json Format", 
         isPrivate = true,
-        autoinstances = {@AutoInstance(hidden = true)},
+        autoinstances = {@AutoInstance(hidden = false)},
         comment = "Support for JSON-serialised GATE basic document",
         helpURL = ""
 )
@@ -67,21 +68,21 @@ public class FormatBdocJson extends DocumentFormat {
    */
   @Override
   public void unpackMarkup(Document dcmnt) throws DocumentFormatException {
-    logger.info("Got this document: "+dcmnt);
     URL sourceURL = dcmnt.getSourceUrl();
     if(sourceURL == null) {
       throw new DocumentFormatException("Cannot create document, no sourceURL");
     }
     SimpleJson sj = new SimpleJson();
-    try (
-            InputStream urlStream = sourceURL.openStream();
-            ) {
-      BdocDocument bdoc = sj.load_doc(urlStream);
-      GateDocumentUpdater gdu = new GateDocumentUpdater(dcmnt);
-      gdu.fromBdoc(bdoc);
-    } catch (Exception ex) {
-      throw new DocumentFormatException("Exception when trying to read the document "+sourceURL,ex);
-    }        
+    String json = dcmnt.getContent().toString();
+    BdocDocument bdoc = sj.loads_doc(json);
+    DocumentContent newContent = new DocumentContentImpl(bdoc.text);
+    try {
+      dcmnt.edit(0L, dcmnt.getContent().size(), newContent);
+    } catch (InvalidOffsetException ex) {
+      throw new DocumentFormatException("Could not set document content", ex);
+    }
+    GateDocumentUpdater gdu = new GateDocumentUpdater(dcmnt);
+    gdu.fromBdoc(bdoc);
   }
 
   /**
