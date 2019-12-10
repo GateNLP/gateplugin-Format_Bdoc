@@ -96,6 +96,7 @@ public class FormatBdocJson extends DocumentFormat {
       throw new DocumentFormatException("Could not set document content", ex);
     }
     GateDocumentUpdater gdu = new GateDocumentUpdater(dcmnt);
+    gdu.handleNewAnnotation(GateDocumentUpdater.HandleNewAnns.ADD_WITH_BDOC_ID);
     gdu.fromBdoc(bdoc);
   }
 
