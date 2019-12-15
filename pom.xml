@@ -80,7 +80,7 @@
     <dependency>
       <groupId>uk.ac.gate.libraries</groupId>
       <artifactId>basicdocument</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>1.0-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>uk.ac.gate</groupId>
