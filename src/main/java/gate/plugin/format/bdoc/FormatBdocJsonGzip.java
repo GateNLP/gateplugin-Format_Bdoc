@@ -37,6 +37,11 @@ import java.net.URL;
 import java.util.zip.GZIPInputStream;
 import org.apache.log4j.Logger;
 
+/**
+ * Read document in Gzip-compressed BdocJson Format.
+ * 
+ * @author Johann Petrak
+ */
 @CreoleResource(
         name = "GATE Gzipped Bdoc-Json Format", 
         isPrivate = true,

@@ -34,6 +34,11 @@ import gate.util.DocumentFormatException;
 import gate.util.InvalidOffsetException;
 import org.apache.log4j.Logger;
 
+/**
+ * Read document in Gzip-compressed BdocJson Format.
+ * 
+ * @author Johann Petrak
+ */
 @CreoleResource(
         name = "GATE Bdoc-Json Format", 
         isPrivate = true,
@@ -42,8 +47,14 @@ import org.apache.log4j.Logger;
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
 public class FormatBdocJson extends DocumentFormat {
+  
+ 
   private static final long serialVersionUID = 687802003643563918L;
   
+  /**
+   * Does not support Repositioning.
+   * @return  false
+   */
   @Override
   public Boolean supportsRepositioning() {
     return false;

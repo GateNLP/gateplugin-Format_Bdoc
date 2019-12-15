@@ -32,6 +32,10 @@ import gate.test.GATEPluginTestCase;
  */
 public class TestFormatBdocJson extends GATEPluginTestCase {
   String expectedText = "A simple \uD83D\uDCA9 document.";
+  /**
+   * Test.
+   * @throws Exception  if error
+   */
   public void testLoadDocument1() throws Exception {
     URL docURL = this.getClass().getResource("/resources/testdoc1.bdocjson");
     FeatureMap params = Factory.newFeatureMap();
@@ -60,6 +64,10 @@ public class TestFormatBdocJson extends GATEPluginTestCase {
     assertEquals(13, annfm2.getOrDefault("annfeature1", 0));    
   }
   
+  /**
+   * Test.
+   * @throws Exception  if error
+   */
   public void testLoadDocumentGzip1() throws Exception {
     URL docURL = this.getClass().getResource("/resources/testdoc1.bdocjson.gz");
     FeatureMap params = Factory.newFeatureMap();
