@@ -32,7 +32,7 @@ import gate.lib.basicdocument.docformats.SimpleJson;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Export document in BdocJson Format.
+ * Export document in Gzip-compressed BdocJson Format.
  * 
  * @author Johann Petrak
  */
