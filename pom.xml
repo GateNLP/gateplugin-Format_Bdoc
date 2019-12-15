@@ -106,6 +106,106 @@
       </exclusions>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <!-- this is just needed for the site goal -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.7.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.1</version>
+        <executions>
+          <execution>
+            <id>default-prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>true</showDeprecation>
+          <compilerArgs>
+            <arg>-Xlint:all</arg>
+            <arg>-Xdoclint:all/public</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <id>before-integration-tests</id>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <phase>integration-test</phase>
+            <configuration>
+          </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.0</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>unit-tests</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <phase>test</phase>
+            <configuration>
+              <skip>false</skip>
+              <excludes>
+                <exclude>**/integration/*.java</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>integration-tests</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <phase>integration-test</phase>
+            <configuration>
+              <skip>false</skip>
+              <excludes>
+                <exclude>none</exclude>
+              </excludes>
+              <includes>
+                <include>**/integration/*.java</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
   <reporting>
     <plugins>
       <plugin>
@@ -121,7 +221,19 @@
           <threshold>Low</threshold>
           <maxHeap>1024</maxHeap>
         </configuration>
+</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+          <systemPropertyVariables>
+            <jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+          </systemPropertyVariables>
+        </configuration>
       </plugin>
+
     </plugins>
   </reporting>
   <modelVersion>4.0.0</modelVersion>
