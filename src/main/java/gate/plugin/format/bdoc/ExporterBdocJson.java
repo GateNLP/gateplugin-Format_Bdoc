@@ -44,7 +44,7 @@ import gate.lib.basicdocument.docformats.SimpleJson;
 )
 public class ExporterBdocJson extends DocumentExporter {
 
-  private static final long serialVersionUID = 7769437689112346068L;
+  private static final long serialVersionUID = 7769434559112346068L;
 
   /**
    * Constructor.
