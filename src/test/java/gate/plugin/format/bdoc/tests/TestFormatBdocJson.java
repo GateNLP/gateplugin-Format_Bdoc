@@ -69,12 +69,18 @@ public class TestFormatBdocJson extends GATEPluginTestCase {
    * @throws Exception  if error
    */
   public void testLoadDocumentGzip1() throws Exception {
+    //Document tmp = (Document)Factory.newDocument(expectedText);
+    //System.err.println("DEBUG: GATE expected text: "+expectedText);
+    //System.err.println("DEBUG: GATE text from doc: "+tmp.getContent().toString());
+    
     URL docURL = this.getClass().getResource("/resources/testdoc1.bdocjson.gz");
     FeatureMap params = Factory.newFeatureMap();
     params.put(Document.DOCUMENT_URL_PARAMETER_NAME, docURL);
     params.put(Document.DOCUMENT_ENCODING_PARAMETER_NAME, "UTF-8");
     params.put(Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/bdocjson+gzip");
     Document doc = (Document)Factory.createResource("gate.corpora.DocumentImpl", params);
+    //System.err.println("DEBUG: BDOC expected text: "+expectedText);
+    //System.err.println("DEBUG: BDOC text from doc: "+doc.getContent().toString());
     assertEquals(expectedText, doc.getContent().toString());
     FeatureMap docfm = doc.getFeatures();
     assertEquals(12, docfm.getOrDefault("docfeature1", 0));

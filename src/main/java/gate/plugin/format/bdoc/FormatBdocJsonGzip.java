@@ -102,7 +102,7 @@ public class FormatBdocJsonGzip extends DocumentFormat {
     try (
             InputStream urlStream = sourceURL.openStream();
             InputStreamReader isr =
-                    new InputStreamReader(new GZIPInputStream(urlStream));
+                    new InputStreamReader(new GZIPInputStream(urlStream), "UTF-8");
             BufferedReader br = new BufferedReader(isr);
             ) {
       StringBuilder sb = new StringBuilder();
