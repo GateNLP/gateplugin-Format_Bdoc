@@ -33,7 +33,7 @@
   <parent>
     <groupId>uk.ac.gate</groupId>
     <artifactId>gate-plugin-base</artifactId>
-    <version>8.6</version>
+    <version>8.6</version> <!-- eventually 9.0? -->
     <relativePath/>
   </parent>
   <properties>
@@ -55,6 +55,8 @@
       <groupId>uk.ac.gate</groupId>
       <artifactId>gcp-api</artifactId>
       <version>3.0-SNAPSHOT</version>
+      <scope>compile</scope>
+      <!--
       <exclusions>
         <exclusion>
           <groupId>uk.ac.gate</groupId>
@@ -77,6 +79,7 @@
           <artifactId>jackson-databind</artifactId>
         </exclusion>
       </exclusions>
+      -->
     </dependency>
     <dependency>
       <groupId>uk.ac.gate.libraries</groupId>
@@ -145,7 +148,7 @@
           <showDeprecation>true</showDeprecation>
           <compilerArgs>
             <arg>-Xlint:all</arg>
-            <arg>-Xdoclint:all/public</arg>
+            <!-- <arg>-Xdoclint:all/public</arg> -->
           </compilerArgs>
         </configuration>
       </plugin>
