@@ -62,7 +62,7 @@ public class FormatBdocJson extends DocumentFormat {
   /**
    * Logger.
    */
-  public Logger logger = Logger.getLogger(this.getClass());
+  public transient Logger logger = Logger.getLogger(this.getClass());
   /**
    * Register support for this format.
    * @return the resource instance
