@@ -39,7 +39,7 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <gate-core.version>8.5</gate-core.version>
+    <gate-core.version>9.0-SNAPSHOT</gate-core.version>
   </properties>
   <licenses>
     <license>
@@ -94,14 +94,6 @@
   </dependencies>
   <build>
     <plugins>
-      <!-- this is just needed for the site goal -->
-      <!-- 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>3.7.1</version>
-      </plugin>
-      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
