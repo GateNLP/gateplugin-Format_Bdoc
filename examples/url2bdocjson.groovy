@@ -1,6 +1,10 @@
 @GrabResolver(name='gate-snapshots', root='http://repo.gate.ac.uk/content/groups/public/')
 @Grab(value='org.codehaus.plexus:plexus-container-default:1.0-alpha-9-stable-1', transitive=false)
-
+@Grab('ch.qos.logback:logback-classic:1.2.3')
+// just downloading the grape may get an error but after doing 
+// mvn dependency:get -Dartifact=org.apache.tika:tika-parsers:1.23
+// it should work !?!?!
+@Grab(value='org.apache.tika:tika-parsers:1.23', transitive=false)
 @Grab('uk.ac.gate:gate-core:9.0-SNAPSHOT') 
 import gate.*
 import gate.creole.*
