@@ -72,8 +72,7 @@ bdoc2 = new BdocDocument();
 bdoc2.offset_type = om.readValue(is, String.class);
 bdoc2.text = om.readValue(is, String.class);
 bdoc2.features = om.readValue(is, Map.class);
-
-System.err.println("BDodc: "+bdoc2);
+System.err.println("features: "+bdoc2.features);
 
 is.close();
 
