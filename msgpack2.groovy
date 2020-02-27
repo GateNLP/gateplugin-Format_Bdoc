@@ -56,7 +56,11 @@ om.writeValue(out,bdoc.gatenlp_type); // its a document
 om.writeValue(out,bdoc.offset_type);
 om.writeValue(out,bdoc.text);
 om.writeValue(out,bdoc.features);
-// need special treatment for the annotation sets
+// need special treatment for the annotation sets:
+// we first save a list of the annotation set names,
+// then in the order of the names, each set as a sequence
+// if fields
+
 out.close();
 
 

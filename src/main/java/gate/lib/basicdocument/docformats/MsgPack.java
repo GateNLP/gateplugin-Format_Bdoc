@@ -256,7 +256,9 @@ public class MsgPack {
           anns.add(ann);
         }
         as.annotations = anns;        
+        annsets.put(name, as);
       }
+      bdoc.annotation_sets = annsets;
     } catch (IOException ex) {
       throw new RuntimeException("Could not load BdocDocument from MsgPack reader", ex);
     }    
