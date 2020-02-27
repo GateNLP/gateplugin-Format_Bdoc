@@ -49,7 +49,7 @@ public class ExporterBdocSimpleJson extends DocumentExporter {
   /**
    * Constructor.
    */
-  public ExporterBdocSimpleJson() {
+  public ExporterBdocSimpleJson() {    
     super("Bdoc/SimpleJson", "bdocsjson", "text/bdocsjson");
   }
 
