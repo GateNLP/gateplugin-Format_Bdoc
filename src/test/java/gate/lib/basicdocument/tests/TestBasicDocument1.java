@@ -106,7 +106,7 @@ public class TestBasicDocument1 extends TestCase {
     Assert.assertEquals("Token", bann3.type);
     
     String json = new SimpleJson().dumps(bdoc);
-    new SimpleJson().dump(bdoc, new File("test-doc1.gate_sj"));
+    new SimpleJson().dump(bdoc, new File("test-doc1.bdocsjson"));
     
     
     // try to re-create Bdoc from JSON

@@ -31,26 +31,26 @@ import java.io.OutputStream;
 import gate.lib.basicdocument.docformats.SimpleJson;
 
 /**
- * Export document in BdocJson Format.
+ * Export document in Bdoc Simple Json Format.
  * 
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "Bdoc/JSON Exporter", 
+        name = "Bdoc/SimpleJSON Exporter", 
         tool = true, 
         autoinstances = @AutoInstance, 
-        comment = "Export GATE documents in Bdoc/Json format.", 
+        comment = "Export GATE documents in Bdoc/SimpleJson format.", 
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class ExporterBdocJson extends DocumentExporter {
+public class ExporterBdocSimpleJson extends DocumentExporter {
 
-  private static final long serialVersionUID = 7769434559112346068L;
+  private static final long serialVersionUID = 7769423019112346068L;
 
   /**
    * Constructor.
    */
-  public ExporterBdocJson() {
-    super("Bdoc/Json", "bdocjson", "text/bdocjson");
+  public ExporterBdocSimpleJson() {
+    super("Bdoc/SimpleJson", "bdocsjson", "text/bdocsjson");
   }
 
   /**
@@ -68,5 +68,6 @@ public class ExporterBdocJson extends DocumentExporter {
     BdocDocument bdoc = builder.buildBdoc();
     sj.dump(bdoc, out);
   }
+  
   
 }

@@ -43,14 +43,14 @@ import org.apache.log4j.Logger;
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "GATE Gzipped Bdoc-Json Format", 
+        name = "GATE Gzipped Bdoc/SimpleJson Format", 
         isPrivate = true,
         autoinstances = {@AutoInstance(hidden = true)},
-        comment = "Support for JSON-serialised GATE basic document, GZIP compressed",
+        comment = "Format Bdoc/SimpleJson, GZIP compressed",
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class FormatBdocJsonGzip extends DocumentFormat {
-  private static final long serialVersionUID = 687845503643563918L;
+public class FormatBdocSimpleJsonGzip extends DocumentFormat {
+  private static final long serialVersionUID = 687845439243563918L;
   
   @Override
   public Boolean supportsRepositioning() {
@@ -67,10 +67,10 @@ public class FormatBdocJsonGzip extends DocumentFormat {
    */
 @Override
   public Resource init() throws ResourceInstantiationException {
-    MimeType mime = new MimeType("text", "bdocjson+gzip");
+    MimeType mime = new MimeType("text", "bdocsjson+gzip");
     mimeString2ClassHandlerMap.put(mime.getType() + "/" + mime.getSubtype(),this);
     mimeString2mimeTypeMap.put(mime.getType() + "/" + mime.getSubtype(), mime);
-    suffixes2mimeTypeMap.put("bdocjson.gz", mime);
+    suffixes2mimeTypeMap.put("bdocsjson.gz", mime);
     setMimeType(mime);
     return this;
   }
@@ -84,7 +84,7 @@ public class FormatBdocJsonGzip extends DocumentFormat {
     MimeType mime = getMimeType();  
     mimeString2ClassHandlerMap.remove(mime.getType() + "/" + mime.getSubtype());
     mimeString2mimeTypeMap.remove(mime.getType() + "/" + mime.getSubtype());  
-    suffixes2mimeTypeMap.remove("bdocjson.gz");
+    suffixes2mimeTypeMap.remove("bdocsjson.gz");
   }
   
   /**

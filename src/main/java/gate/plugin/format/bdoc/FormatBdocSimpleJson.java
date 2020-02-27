@@ -35,21 +35,21 @@ import gate.util.InvalidOffsetException;
 import org.apache.log4j.Logger;
 
 /**
- * Read document in Gzip-compressed BdocJson Format.
+ * Read document in Gzip-compressed Bdoc Simple Json Format.
  * 
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "GATE Bdoc-Json Format", 
+        name = "GATE Bdoc/SimpleJson Format", 
         isPrivate = true,
         autoinstances = {@AutoInstance(hidden = true)},
-        comment = "Support for JSON-serialised GATE basic document",
+        comment = "Format Bdoc/SimpleJson",
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class FormatBdocJson extends DocumentFormat {
+public class FormatBdocSimpleJson extends DocumentFormat {
   
  
-  private static final long serialVersionUID = 687802003643563918L;
+  private static final long serialVersionUID = 687394803643563918L;
   
   /**
    * Does not support Repositioning.
@@ -70,10 +70,10 @@ public class FormatBdocJson extends DocumentFormat {
    */
 @Override
   public Resource init() throws ResourceInstantiationException {
-    MimeType mime = new MimeType("text", "bdocjson");
+    MimeType mime = new MimeType("text", "bdocsjson");
     mimeString2ClassHandlerMap.put(mime.getType() + "/" + mime.getSubtype(),this);
     mimeString2mimeTypeMap.put(mime.getType() + "/" + mime.getSubtype(), mime);
-    suffixes2mimeTypeMap.put("bdocjson", mime);
+    suffixes2mimeTypeMap.put("bdocsjson", mime);
     setMimeType(mime);
     return this;
   }
@@ -87,7 +87,7 @@ public class FormatBdocJson extends DocumentFormat {
     MimeType mime = getMimeType();  
     mimeString2ClassHandlerMap.remove(mime.getType() + "/" + mime.getSubtype());
     mimeString2mimeTypeMap.remove(mime.getType() + "/" + mime.getSubtype());  
-    suffixes2mimeTypeMap.remove("bdocjson");
+    suffixes2mimeTypeMap.remove("bdocsjson");
   }
   
   /**

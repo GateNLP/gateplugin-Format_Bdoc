@@ -32,26 +32,26 @@ import gate.lib.basicdocument.docformats.SimpleJson;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Export document in Gzip-compressed BdocJson Format.
+ * Export document in Gzip-compressed Bdoc Simple Json Format.
  * 
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "Bdoc/Json Gzipped Exporter", 
+        name = "Bdoc/SimpleJson Gzipped Exporter", 
         tool = true, 
         autoinstances = @AutoInstance, 
-        comment = "Export GATE documents in Gzipped Bdoc/Json format.", 
+        comment = "Export GATE documents in Gzipped Bdoc/SimpleJson format.", 
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class ExporterBdocJsonGzip extends DocumentExporter {
+public class ExporterBdocSimpleJsonGzip extends DocumentExporter {
 
-  private static final long serialVersionUID = 7769434569112346068L;
+  private static final long serialVersionUID = 7769438945112346068L;
 
   /**
    * Constructor.
    */
-  public ExporterBdocJsonGzip() {
-    super("Bdoc/Json+Gzip", "bdocjson.gz", "text/bdocjson+gzip");
+  public ExporterBdocSimpleJsonGzip() {
+    super("Bdoc/SimpleJson+Gzip", "bdocsjson.gz", "text/bdocsjson+gzip");
   }
 
   /**
