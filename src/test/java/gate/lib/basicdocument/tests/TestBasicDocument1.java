@@ -35,6 +35,7 @@ import gate.util.GateException;
 import gate.util.InvalidOffsetException;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -113,7 +114,7 @@ public class TestBasicDocument1 extends TestCase {
     BdocDocument bdoc2 = new SimpleJson().loads_doc(json);
     Assert.assertNotNull(bdoc2.annotation_sets);
     System.err.println("annotation_sets: "+bdoc2.annotation_sets.getClass().getName());
-    Assert.assertTrue(bdoc2.annotation_sets.getClass().getName().equals("java.util.HashMap"));
+    Assert.assertTrue(bdoc2.annotation_sets instanceof Map);
     Assert.assertTrue(bdoc2.annotation_sets.containsKey(""));
     BdocAnnotationSet bset2 = bdoc2.annotation_sets.get("");
     Assert.assertNotNull(bset2);

@@ -355,6 +355,9 @@ public class GateDocumentUpdater {
 
   private void addAnnotationSet(BdocAnnotationSet annset, String offsetType) {
     String setname = annset.name;
+    if(setname == null) {
+      setname = "";
+    }
     AnnotationSet gateset;
     if (setname.equals("")) {
       gateset = gateDocument.getAnnotations();

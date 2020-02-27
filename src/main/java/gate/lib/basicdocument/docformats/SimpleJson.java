@@ -183,6 +183,20 @@ public class SimpleJson {
       throw new RuntimeException("Could not read BdocDocument from input stream", ex);
     }
   }
+
+  /**
+   * Load JSON from File
+   * @param file File to read from
+   * @return bdoc document instance
+   */
+  public BdocDocument load_doc(File file) {
+    JSON jsonbuilder = JSON.std;
+    try {
+      return jsonbuilder.beanFrom(BdocDocument.class, file);
+    } catch (IOException ex) {
+      throw new RuntimeException("Could not read BdocDocument from file "+file, ex);
+    }
+  }
   
   /**
    * Load JSON from reader
@@ -223,6 +237,20 @@ public class SimpleJson {
     JSON jsonbuilder = JSON.std;
     try {
       return jsonbuilder.beanFrom(ChangeLog.class, instream);
+    } catch (IOException ex) {
+      throw new RuntimeException("Could not read BdocChangeLog from input stream", ex);
+    }
+  }
+  
+  /**
+   * Load JSON changelog representation from File
+   * @param file file to read from
+   * @return changelog instance
+   */
+  public ChangeLog load_log(File file) {
+    JSON jsonbuilder = JSON.std;
+    try {
+      return jsonbuilder.beanFrom(ChangeLog.class, file);
     } catch (IOException ex) {
       throw new RuntimeException("Could not read BdocChangeLog from input stream", ex);
     }

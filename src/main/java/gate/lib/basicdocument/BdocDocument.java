@@ -20,7 +20,7 @@
 package gate.lib.basicdocument;
 
 import gate.Document;
-import java.util.HashMap;
+import java.util.Map;
 import org.apache.log4j.Logger;
 
 
@@ -48,7 +48,7 @@ public class BdocDocument
    * NOTE: this is a HashMap rather than a Map so that jackson-jr does not 
    * use its own DeferredMap on restoring.
    */
-  public HashMap<String, Object> features;
+  public Map<String, Object> features;
   
   /**
    * Document text.
@@ -62,7 +62,7 @@ public class BdocDocument
    * NOTE: this is a HashMap rather than a Map so that jackson-jr does not 
    * use its own DeferredMap on restoring.
    */
-  public HashMap<String, BdocAnnotationSet> annotation_sets;
+  public Map<String, BdocAnnotationSet> annotation_sets;
   
   /**
    * Indicates the style of offsets used in this document.
