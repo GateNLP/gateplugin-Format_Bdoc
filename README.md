@@ -9,6 +9,12 @@ Maven Coordinates:
 * groupId: uk.ac.gate.plugins
 * artifactId: format-bdoc
 
+## Versions
+
+* Version 1.0-SNAPSHOT is compatible with GATE 8.6.1 and later
+  * this version is in branch `v1.0-pre9.0`
+* Version 1.1-SNAPSHOT requires GATE 9.0-SNAPSHOT or later
+
 ## Bdoc representation
 
 The package gate.lib.basicdocument provides classes to represent the main 
