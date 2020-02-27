@@ -20,6 +20,7 @@
 
 package gate.lib.basicdocument.docformats;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jr.ob.JSON;
 import gate.lib.basicdocument.ChangeLog;
 import gate.lib.basicdocument.BdocDocument;
@@ -29,16 +30,26 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import org.msgpack.jackson.dataformat.MessagePackFactory;
+
+// TODO!!
+// So far this is just a copy of the simplejson class
+// We need to actually implement the de/serialization using MsgPack!
+// For this we need our own utility class to handle objects where we 
+// do not need the type in advance!
 
 /**
- * Serialize and deserialize BdocDocument and BdocChangeLog instances as JSON.
+ * Serialize and deserialize BdocDocument and BdocChangeLog instances as MsgPack.
  * 
  * These are convenience methods to make it easy to serialise and deserialise
- * BdocDocument and BdocChangeLog instances as JSON. 
+ * BdocDocument and BdocChangeLog instances as MsgPack.  
  * 
  * @author Johann Petrak johann.petrak@gmail.com
  */
-public class SimpleJson {
+public class MsgPack {
+    
+  public MsgPack() {
+  }
   
   // 1) Writing to JSON: this is really simple, we essentially just write 
   // exactly what we have
