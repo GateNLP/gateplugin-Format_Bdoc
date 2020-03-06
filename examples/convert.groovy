@@ -19,7 +19,7 @@ System.out.println("Trying to convert from "+infile+" to "+outfile);
 Gate.getCreoleRegister().registerPlugin(
   new Plugin.Maven("uk.ac.gate.plugins", "format-fastinfoset", "8.5-SNAPSHOT"));
 Gate.getCreoleRegister().registerPlugin(
-  new Plugin.Maven("uk.ac.gate.plugins", "format-bdoc", "1.1-SNAPSHOT"));
+  new Plugin.Maven("uk.ac.gate.plugins", "format-bdoc", "1.0-SNAPSHOT"));
 
 parms = Factory.newFeatureMap();
 parms.put("sourceURL", infile)
