@@ -9,7 +9,7 @@
 import gate.*
 import gate.creole.*
 import gate.util.*
-@Grab('uk.ac.gate.plugins:format-bdoc:1.0-SNAPSHOT')
+@Grab('uk.ac.gate.plugins:format-bdoc:1.1-SNAPSHOT')
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.BdocDocumentBuilder;
 import gate.lib.basicdocument.docformats.SimpleJson;
