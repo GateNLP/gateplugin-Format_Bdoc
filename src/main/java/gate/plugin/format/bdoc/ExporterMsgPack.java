@@ -29,7 +29,6 @@ import gate.lib.basicdocument.BdocDocumentBuilder;
 import gate.lib.basicdocument.docformats.MsgPack;
 import java.io.IOException;
 import java.io.OutputStream;
-import gate.lib.basicdocument.docformats.SimpleJson;
 
 /**
  * Export document in Bdoc Simple Json Format.
@@ -51,7 +50,7 @@ public class ExporterMsgPack extends DocumentExporter {
    * Constructor.
    */
   public ExporterMsgPack() {    
-    super("Bdoc/MsgPack", "bdocmsgp", "application/x-bdocmsgp");
+    super("Bdoc/MsgPack", "bdocmp", "application/bdocmp");
   }
 
   /**

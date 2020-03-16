@@ -36,10 +36,10 @@ import gate.lib.basicdocument.docformats.SimpleJson;
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "Bdoc/SimpleJSON Exporter", 
+        name = "[Bdoc/SimpleJSON Exporter]", 
         tool = true, 
         autoinstances = @AutoInstance, 
-        comment = "Export GATE documents in Bdoc/SimpleJson format.", 
+        comment = "Export GATE documents in Bdoc/SimpleJson format (DEPRECATED).", 
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
 public class ExporterBdocSimpleJson extends DocumentExporter {
@@ -50,7 +50,7 @@ public class ExporterBdocSimpleJson extends DocumentExporter {
    * Constructor.
    */
   public ExporterBdocSimpleJson() {    
-    super("Bdoc/SimpleJson", "bdocsjson", "text/bdocsjson");
+    super("[Bdoc/SimpleJson]", "bdocsjson", "text/bdocsjson");
   }
 
   /**

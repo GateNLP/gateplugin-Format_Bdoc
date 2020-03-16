@@ -19,6 +19,7 @@
  */
 package gate.plugin.format.bdoc;
 
+import java.io.*;
 import gate.*;
 import gate.Resource;
 import gate.corpora.DocumentContentImpl;
@@ -29,36 +30,28 @@ import gate.creole.metadata.AutoInstance;
 import gate.creole.metadata.CreoleResource;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.GateDocumentUpdater;
-import gate.lib.basicdocument.docformats.MsgPack;
+import gate.lib.basicdocument.docformats.SimpleJson;
 import gate.util.DocumentFormatException;
-import gate.util.GateRuntimeException;
 import gate.util.InvalidOffsetException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
+import java.util.zip.GZIPInputStream;
 import org.apache.log4j.Logger;
 
 /**
- * Read document in Bdoc MsgPack Format.
+ * Read document in Gzip-compressed BdocJson Format.
  * 
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "GATE Bdoc/MsgPack Format", 
+        name = "GATE Gzipped Bdoc/JSON Format", 
         isPrivate = true,
         autoinstances = {@AutoInstance(hidden = true)},
-        comment = "Format Bdoc/MsgPack",
+        comment = "Format Bdoc/JSON, GZIP compressed",
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class FormatBdocMsgPack extends DocumentFormat {
+public class FormatBdocJsonGzip extends DocumentFormat {
+  private static final long serialVersionUID = 687845439243563918L;
   
- 
-  private static final long serialVersionUID = 687111234543563918L;
-  
-  /**
-   * Does not support Repositioning.
-   * @return  false
-   */
   @Override
   public Boolean supportsRepositioning() {
     return false;
@@ -74,10 +67,10 @@ public class FormatBdocMsgPack extends DocumentFormat {
    */
 @Override
   public Resource init() throws ResourceInstantiationException {
-    MimeType mime = new MimeType("application", "bdocmp");
+    MimeType mime = new MimeType("text", "bdocjs+gzip");
     mimeString2ClassHandlerMap.put(mime.getType() + "/" + mime.getSubtype(),this);
     mimeString2mimeTypeMap.put(mime.getType() + "/" + mime.getSubtype(), mime);
-    suffixes2mimeTypeMap.put("bdocmp", mime);
+    suffixes2mimeTypeMap.put("bdocjs.gz", mime);
     setMimeType(mime);
     return this;
   }
@@ -91,7 +84,7 @@ public class FormatBdocMsgPack extends DocumentFormat {
     MimeType mime = getMimeType();  
     mimeString2ClassHandlerMap.remove(mime.getType() + "/" + mime.getSubtype());
     mimeString2mimeTypeMap.remove(mime.getType() + "/" + mime.getSubtype());  
-    suffixes2mimeTypeMap.remove("bdocmp");
+    suffixes2mimeTypeMap.remove("bdocjs.gz");
   }
   
   /**
@@ -101,18 +94,28 @@ public class FormatBdocMsgPack extends DocumentFormat {
    */
   @Override
   public void unpackMarkup(Document dcmnt) throws DocumentFormatException {
-    MsgPack mp = new MsgPack();
-    URL sourceUrl = dcmnt.getSourceUrl();
-    if(sourceUrl == null) {
-      throw new GateRuntimeException("Source URL is null???");
+    URL sourceURL = dcmnt.getSourceUrl();
+    if(sourceURL == null) {
+      throw new DocumentFormatException("Cannot create document, no sourceURL");
     }
-    System.err.println("DEBUG: source URL is "+sourceUrl);
-    BdocDocument bdoc;
-    try (InputStream is = sourceUrl.openStream()) {
-      bdoc = mp.load_doc(is);
-    } catch (IOException ex) {
-      throw new GateRuntimeException("Could not read MsgPack data from URL "+sourceUrl, ex);
-    }    
+    String json;
+    try (
+            InputStream urlStream = sourceURL.openStream();
+            InputStreamReader isr =
+                    new InputStreamReader(new GZIPInputStream(urlStream), "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            ) {
+      StringBuilder sb = new StringBuilder();
+      String line;
+      while(null != (line = br.readLine())) {
+        sb.append(line);
+      }
+      json = sb.toString();
+    } catch (IOException ex) { 
+      throw new DocumentFormatException("Exception when trying to read the document "+sourceURL,ex);
+    }
+    SimpleJson sj = new SimpleJson();
+    BdocDocument bdoc = sj.loads_doc(json);
     DocumentContent newContent = new DocumentContentImpl(bdoc.text);
     try {
       dcmnt.edit(0L, dcmnt.getContent().size(), newContent);

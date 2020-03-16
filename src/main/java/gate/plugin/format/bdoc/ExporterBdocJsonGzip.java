@@ -37,21 +37,21 @@ import java.util.zip.GZIPOutputStream;
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "[Bdoc/SimpleJson Gzipped Exporter]", 
+        name = "Bdoc/JSON Gzipped Exporter", 
         tool = true, 
         autoinstances = @AutoInstance, 
-        comment = "Export GATE documents in Gzipped Bdoc/SimpleJson format (DEPRECATED).", 
+        comment = "Export GATE documents in Gzipped Bdoc/JSON format.", 
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class ExporterBdocSimpleJsonGzip extends DocumentExporter {
+public class ExporterBdocJsonGzip extends DocumentExporter {
 
   private static final long serialVersionUID = 7769438945112346068L;
 
   /**
    * Constructor.
    */
-  public ExporterBdocSimpleJsonGzip() {
-    super("[Bdoc/SimpleJson+Gzip]", "bdocsjson.gz", "text/bdocsjson+gzip");
+  public ExporterBdocJsonGzip() {
+    super("Bdoc/JSON+Gzip", "bdocjs.gz", "text/bdocjs+gzip");
   }
 
   /**
