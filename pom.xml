@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <groupId>uk.ac.gate.plugins</groupId>
   <artifactId>format-bdoc</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
   <name>Format: Bdoc</name>
   <description>
 	  Plugin to save/load GATE documents in 
@@ -40,7 +40,7 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <gate-core.version>8.6</gate-core.version>
+    <gate-core.version>9.0-SNAPSHOT</gate-core.version>
   </properties>
   <licenses>
     <license>

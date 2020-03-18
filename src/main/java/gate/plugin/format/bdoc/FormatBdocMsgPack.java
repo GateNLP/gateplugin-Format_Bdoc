@@ -50,7 +50,7 @@ import org.apache.log4j.Logger;
         comment = "Format Bdoc/MsgPack",
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class FormatBdocMsgPack extends DocumentFormat {
+public class FormatBdocMsgPack extends DocumentFormat implements BinaryDocumentFormat {
   
  
   private static final long serialVersionUID = 687111234543563918L;
@@ -100,13 +100,14 @@ public class FormatBdocMsgPack extends DocumentFormat {
    * @throws DocumentFormatException if error
    */
   @Override
-  public void unpackMarkup(Document dcmnt) throws DocumentFormatException {
+  public void unpackMarkup(Document dcmnt) throws DocumentFormatException {    
     MsgPack mp = new MsgPack();
     URL sourceUrl = dcmnt.getSourceUrl();
+    System.err.println("DEBUG: source URL is "+sourceUrl);
+    System.err.println("DEBUG: document content: "+dcmnt.getContent());
     if(sourceUrl == null) {
       throw new GateRuntimeException("Source URL is null???");
     }
-    System.err.println("DEBUG: source URL is "+sourceUrl);
     BdocDocument bdoc;
     try (InputStream is = sourceUrl.openStream()) {
       bdoc = mp.load_doc(is);
@@ -134,6 +135,11 @@ public class FormatBdocMsgPack extends DocumentFormat {
   @Override
   public void unpackMarkup(Document dcmnt, RepositioningInfo ri, RepositioningInfo ri1) throws DocumentFormatException {
     throw new UnsupportedOperationException("Should not be needed"); 
+  }
+
+  @Override
+  public boolean shouldReadFromUrl(MimeType mimeType, URL sourceUrl) {
+    return false;
   }
   
 }
