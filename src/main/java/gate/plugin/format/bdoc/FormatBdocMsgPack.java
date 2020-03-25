@@ -50,7 +50,7 @@ import org.apache.log4j.Logger;
         comment = "Format Bdoc/MsgPack",
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class FormatBdocMsgPack extends DocumentFormat implements BinaryDocumentFormat {
+public class FormatBdocMsgPack extends DocumentFormat implements DirectLoadingDocumentFormat {
   
  
   private static final long serialVersionUID = 687111234543563918L;
@@ -135,11 +135,6 @@ public class FormatBdocMsgPack extends DocumentFormat implements BinaryDocumentF
   @Override
   public void unpackMarkup(Document dcmnt, RepositioningInfo ri, RepositioningInfo ri1) throws DocumentFormatException {
     throw new UnsupportedOperationException("Should not be needed"); 
-  }
-
-  @Override
-  public boolean shouldReadFromUrl(MimeType mimeType, URL sourceUrl) {
-    return false;
   }
   
 }
