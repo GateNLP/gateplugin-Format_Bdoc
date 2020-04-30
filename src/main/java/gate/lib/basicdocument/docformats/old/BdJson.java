@@ -18,14 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package gate.lib.basicdocument.docformats;
+package gate.lib.basicdocument.docformats.old;
 
 import com.fasterxml.jackson.jr.ob.JSON;
 import gate.lib.basicdocument.BdocAnnotation;
 import gate.lib.basicdocument.BdocAnnotationSet;
 import gate.lib.basicdocument.ChangeLog;
 import gate.lib.basicdocument.BdocDocument;
-import static gate.lib.basicdocument.docformats.MsgPack.VERSION;
+import static gate.lib.basicdocument.docformats.old.MsgPack.VERSION;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package gate.plugin.format.bdoc;
+package gate.plugin.format.bdoc.old;
 
 import gate.Document;
 import gate.DocumentExporter;
@@ -28,7 +28,7 @@ import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.BdocDocumentBuilder;
 import java.io.IOException;
 import java.io.OutputStream;
-import gate.lib.basicdocument.docformats.SimpleJson;
+import gate.lib.basicdocument.docformats.old.SimpleJson;
 
 /**
  * Export document in Bdoc Simple Json Format.
@@ -36,21 +36,21 @@ import gate.lib.basicdocument.docformats.SimpleJson;
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "[Bdoc/SimpleJSON Exporter]", 
+        name = "OLD:Bdoc/JSON Exporter", 
         tool = true, 
         autoinstances = @AutoInstance, 
-        comment = "Export GATE documents in Bdoc/SimpleJson format (DEPRECATED).", 
+        comment = "OLD:Export GATE documents in Bdoc/JSON format.", 
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class ExporterBdocSimpleJson extends DocumentExporter {
+public class ExporterBdocJson extends DocumentExporter {
 
   private static final long serialVersionUID = 7769423019112346068L;
 
   /**
    * Constructor.
    */
-  public ExporterBdocSimpleJson() {    
-    super("[Bdoc/SimpleJson]", "bdocsjson", "text/bdocsjson");
+  public ExporterBdocJson() {    
+    super("OLD:Bdoc/JSON", "old_bdocjs", "text/old_bdocjs");
   }
 
   /**

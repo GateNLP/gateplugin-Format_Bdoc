@@ -17,60 +17,63 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package gate.plugin.format.bdoc;
+
+package gate.plugin.format.bdoc.gcp;
 
 import gate.Document;
-import gate.DocumentExporter;
-import gate.FeatureMap;
-import gate.creole.metadata.AutoInstance;
-import gate.creole.metadata.CreoleResource;
+import gate.cloud.batch.DocumentID;
+import static gate.cloud.io.IOConstants.PARAM_FILE_EXTENSION;
+import gate.cloud.io.file.AbstractFileOutputHandler;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.BdocDocumentBuilder;
+import gate.lib.basicdocument.docformats.old.SimpleJson;
+import gate.util.GateException;
 import java.io.IOException;
 import java.io.OutputStream;
-import gate.lib.basicdocument.docformats.SimpleJson;
-import java.util.zip.GZIPOutputStream;
+import java.util.Map;
 
 /**
- * Export document in Gzip-compressed Bdoc Simple Json Format.
+ * Output handler for the BdocJson format.
  * 
  * @author Johann Petrak
  */
-@CreoleResource(
-        name = "Bdoc/JSON Gzipped Exporter", 
-        tool = true, 
-        autoinstances = @AutoInstance, 
-        comment = "Export GATE documents in Gzipped Bdoc/JSON format.", 
-        helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
-)
-public class ExporterBdocJsonGzip extends DocumentExporter {
-
-  private static final long serialVersionUID = 7769438945112346068L;
-
+public class BdocJsonOutputHandlerOld  extends AbstractFileOutputHandler {
+  
   /**
-   * Constructor.
-   */
-  public ExporterBdocJsonGzip() {
-    super("Bdoc/JSON+Gzip", "bdocjs.gz", "text/bdocjs+gzip");
-  }
-
-  /**
-   * Export the document.
-   * @param dcmnt document
-   * @param out output stream
-   * @param fm features
-   * @throws IOException  if error
+   * Make sure the extension is set.
+   * @param configData config data 
+   * @throws IOException if there is an IO error
+   * @throws GateException  if there is another error
    */
   @Override
-  public void export(Document dcmnt, OutputStream out, FeatureMap fm) throws IOException {
+  protected void configImpl(Map<String, String> configData) 
+          throws IOException, GateException 
+  {
+    // make sure we default to .bdocjson as the extension
+    if(!configData.containsKey(PARAM_FILE_EXTENSION)) {
+      configData.put(PARAM_FILE_EXTENSION, ".old_bdocjson");
+    }
+    super.configImpl(configData);
+  }
+  
+  /**
+   * How to output as BdocJson.
+   * @param dcmnt document
+   * @param did document id
+   * @throws IOException error
+   * @throws GateException  error
+   */
+  @Override
+  protected void outputDocumentImpl(Document dcmnt, DocumentID did) 
+          throws IOException, GateException 
+  {
     SimpleJson sj = new SimpleJson();
     BdocDocumentBuilder builder = new BdocDocumentBuilder();
     builder.fromGate(dcmnt);
     BdocDocument bdoc = builder.buildBdoc();
-    try ( GZIPOutputStream gos = new GZIPOutputStream(out)) {
-      sj.dump(bdoc, gos);
-    }
-    
+    try ( OutputStream os = getFileOutputStream(did);) {
+      sj.dump(bdoc, os);      
+    }    
   }
   
 }

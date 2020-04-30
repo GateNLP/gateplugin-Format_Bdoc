@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package gate.plugin.format.bdoc;
+package gate.plugin.format.bdoc.old;
 
 import gate.Document;
 import gate.DocumentExporter;
@@ -26,32 +26,31 @@ import gate.creole.metadata.AutoInstance;
 import gate.creole.metadata.CreoleResource;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.BdocDocumentBuilder;
+import gate.lib.basicdocument.docformats.old.MsgPack;
 import java.io.IOException;
 import java.io.OutputStream;
-import gate.lib.basicdocument.docformats.SimpleJson;
-import java.util.zip.GZIPOutputStream;
 
 /**
- * Export document in Gzip-compressed Bdoc Simple Json Format.
+ * Export document in Bdoc Simple Json Format.
  * 
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "[Bdoc/SimpleJson Gzipped Exporter]", 
+        name = "OLD:Bdoc/MsgPack Exporter", 
         tool = true, 
         autoinstances = @AutoInstance, 
-        comment = "Export GATE documents in Gzipped Bdoc/SimpleJson format (DEPRECATED).", 
+        comment = "OLD:Export GATE documents in Bdoc/MsgPack format.", 
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class ExporterBdocSimpleJsonGzip extends DocumentExporter {
+public class ExporterBdocMsgPack extends DocumentExporter {
 
-  private static final long serialVersionUID = 7769438945112346068L;
+  private static final long serialVersionUID = 7749995679112346068L;
 
   /**
    * Constructor.
    */
-  public ExporterBdocSimpleJsonGzip() {
-    super("[Bdoc/SimpleJson+Gzip]", "bdocsjson.gz", "text/bdocsjson+gzip");
+  public ExporterBdocMsgPack() {    
+    super("OLD:Bdoc/MsgPack", "old_bdocmp", "application/old_bdocmp");
   }
 
   /**
@@ -63,14 +62,12 @@ public class ExporterBdocSimpleJsonGzip extends DocumentExporter {
    */
   @Override
   public void export(Document dcmnt, OutputStream out, FeatureMap fm) throws IOException {
-    SimpleJson sj = new SimpleJson();
+    MsgPack mp = new MsgPack();
     BdocDocumentBuilder builder = new BdocDocumentBuilder();
     builder.fromGate(dcmnt);
     BdocDocument bdoc = builder.buildBdoc();
-    try ( GZIPOutputStream gos = new GZIPOutputStream(out)) {
-      sj.dump(bdoc, gos);
-    }
-    
+    mp.dump(bdoc, out);
   }
+  
   
 }

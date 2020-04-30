@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package gate.plugin.format.bdoc;
+package gate.plugin.format.bdoc.old;
 
 import gate.Document;
 import gate.DocumentExporter;
@@ -26,31 +26,32 @@ import gate.creole.metadata.AutoInstance;
 import gate.creole.metadata.CreoleResource;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.BdocDocumentBuilder;
-import gate.lib.basicdocument.docformats.MsgPack;
 import java.io.IOException;
 import java.io.OutputStream;
+import gate.lib.basicdocument.docformats.old.SimpleJson;
+import java.util.zip.GZIPOutputStream;
 
 /**
- * Export document in Bdoc Simple Json Format.
+ * Export document in Gzip-compressed Bdoc Simple Json Format.
  * 
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "Bdoc/MsgPack Exporter", 
+        name = "OLD:Bdoc/JSON Gzipped Exporter", 
         tool = true, 
         autoinstances = @AutoInstance, 
-        comment = "Export GATE documents in Bdoc/MsgPack format.", 
+        comment = "OLD:Export GATE documents in Gzipped Bdoc/JSON format.", 
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class ExporterMsgPack extends DocumentExporter {
+public class ExporterBdocJsonGzip extends DocumentExporter {
 
-  private static final long serialVersionUID = 7749995679112346068L;
+  private static final long serialVersionUID = 7769438945112346068L;
 
   /**
    * Constructor.
    */
-  public ExporterMsgPack() {    
-    super("Bdoc/MsgPack", "bdocmp", "application/bdocmp");
+  public ExporterBdocJsonGzip() {
+    super("OLD:Bdoc/JSON+Gzip", "old_bdocjs.gz", "text/old_bdocjs+gzip");
   }
 
   /**
@@ -62,12 +63,14 @@ public class ExporterMsgPack extends DocumentExporter {
    */
   @Override
   public void export(Document dcmnt, OutputStream out, FeatureMap fm) throws IOException {
-    MsgPack mp = new MsgPack();
+    SimpleJson sj = new SimpleJson();
     BdocDocumentBuilder builder = new BdocDocumentBuilder();
     builder.fromGate(dcmnt);
     BdocDocument bdoc = builder.buildBdoc();
-    mp.dump(bdoc, out);
+    try ( GZIPOutputStream gos = new GZIPOutputStream(out)) {
+      sj.dump(bdoc, gos);
+    }
+    
   }
-  
   
 }

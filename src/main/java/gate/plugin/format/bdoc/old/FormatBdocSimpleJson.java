@@ -17,9 +17,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package gate.plugin.format.bdoc;
+package gate.plugin.format.bdoc.old;
 
-import java.io.*;
 import gate.*;
 import gate.Resource;
 import gate.corpora.DocumentContentImpl;
@@ -30,28 +29,32 @@ import gate.creole.metadata.AutoInstance;
 import gate.creole.metadata.CreoleResource;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.GateDocumentUpdater;
-import gate.lib.basicdocument.docformats.SimpleJson;
+import gate.lib.basicdocument.docformats.old.SimpleJson;
 import gate.util.DocumentFormatException;
 import gate.util.InvalidOffsetException;
-import java.net.URL;
-import java.util.zip.GZIPInputStream;
 import org.apache.log4j.Logger;
 
 /**
- * Read document in Gzip-compressed BdocJson Format.
+ * Read document in Gzip-compressed Bdoc Simple Json Format.
  * 
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "GATE Gzipped Bdoc/SimpleJson Format", 
+        name = "OLD:GATE Bdoc/SimpleJson Format", 
         isPrivate = true,
         autoinstances = {@AutoInstance(hidden = true)},
-        comment = "Format Bdoc/SimpleJson, GZIP compressed",
+        comment = "OLD:Format Bdoc/SimpleJson",
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class FormatBdocSimpleJsonGzip extends DocumentFormat {
-  private static final long serialVersionUID = 687845439243563918L;
+public class FormatBdocSimpleJson extends DocumentFormat {
   
+ 
+  private static final long serialVersionUID = 687394803643563918L;
+  
+  /**
+   * Does not support Repositioning.
+   * @return  false
+   */
   @Override
   public Boolean supportsRepositioning() {
     return false;
@@ -67,10 +70,10 @@ public class FormatBdocSimpleJsonGzip extends DocumentFormat {
    */
 @Override
   public Resource init() throws ResourceInstantiationException {
-    MimeType mime = new MimeType("text", "bdocsjson+gzip");
+    MimeType mime = new MimeType("text", "old_bdocsjson");
     mimeString2ClassHandlerMap.put(mime.getType() + "/" + mime.getSubtype(),this);
     mimeString2mimeTypeMap.put(mime.getType() + "/" + mime.getSubtype(), mime);
-    suffixes2mimeTypeMap.put("bdocsjson.gz", mime);
+    suffixes2mimeTypeMap.put("old_bdocsjson", mime);
     setMimeType(mime);
     return this;
   }
@@ -84,7 +87,7 @@ public class FormatBdocSimpleJsonGzip extends DocumentFormat {
     MimeType mime = getMimeType();  
     mimeString2ClassHandlerMap.remove(mime.getType() + "/" + mime.getSubtype());
     mimeString2mimeTypeMap.remove(mime.getType() + "/" + mime.getSubtype());  
-    suffixes2mimeTypeMap.remove("bdocsjson.gz");
+    suffixes2mimeTypeMap.remove("old_bdocsjson");
   }
   
   /**
@@ -94,27 +97,8 @@ public class FormatBdocSimpleJsonGzip extends DocumentFormat {
    */
   @Override
   public void unpackMarkup(Document dcmnt) throws DocumentFormatException {
-    URL sourceURL = dcmnt.getSourceUrl();
-    if(sourceURL == null) {
-      throw new DocumentFormatException("Cannot create document, no sourceURL");
-    }
-    String json;
-    try (
-            InputStream urlStream = sourceURL.openStream();
-            InputStreamReader isr =
-                    new InputStreamReader(new GZIPInputStream(urlStream), "UTF-8");
-            BufferedReader br = new BufferedReader(isr);
-            ) {
-      StringBuilder sb = new StringBuilder();
-      String line;
-      while(null != (line = br.readLine())) {
-        sb.append(line);
-      }
-      json = sb.toString();
-    } catch (IOException ex) { 
-      throw new DocumentFormatException("Exception when trying to read the document "+sourceURL,ex);
-    }
     SimpleJson sj = new SimpleJson();
+    String json = dcmnt.getContent().toString();
     BdocDocument bdoc = sj.loads_doc(json);
     DocumentContent newContent = new DocumentContentImpl(bdoc.text);
     try {

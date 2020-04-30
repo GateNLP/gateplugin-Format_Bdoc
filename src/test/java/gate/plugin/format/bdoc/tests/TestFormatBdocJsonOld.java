@@ -30,18 +30,18 @@ import gate.test.GATEPluginTestCase;
  * Test the FormatBdcoJson class.
  * @author Johann Petrak
  */
-public class TestFormatBdocJson extends GATEPluginTestCase {
+public class TestFormatBdocJsonOld extends GATEPluginTestCase {
   String expectedText = "A simple \uD83D\uDCA9 document.";
   /**
    * Test.
    * @throws Exception  if error
    */
   public void testLoadDocument1() throws Exception {
-    URL docURL = this.getClass().getResource("/resources/testdoc1.bdocsjson");
+    URL docURL = this.getClass().getResource("/resources/testdoc1.old_bdocsjson");
     FeatureMap params = Factory.newFeatureMap();
     params.put(Document.DOCUMENT_URL_PARAMETER_NAME, docURL);
     params.put(Document.DOCUMENT_ENCODING_PARAMETER_NAME, "UTF-8");
-    params.put(Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/bdocsjson");
+    params.put(Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/old_bdocsjson");
     Document doc = (Document)Factory.createResource("gate.corpora.DocumentImpl", params);
     assertEquals(expectedText, doc.getContent().toString());
     FeatureMap docfm = doc.getFeatures();
@@ -73,11 +73,11 @@ public class TestFormatBdocJson extends GATEPluginTestCase {
     //System.err.println("DEBUG: GATE expected text: "+expectedText);
     //System.err.println("DEBUG: GATE text from doc: "+tmp.getContent().toString());
     
-    URL docURL = this.getClass().getResource("/resources/testdoc1.bdocsjson.gz");
+    URL docURL = this.getClass().getResource("/resources/testdoc1.old_bdocsjson.gz");
     FeatureMap params = Factory.newFeatureMap();
     params.put(Document.DOCUMENT_URL_PARAMETER_NAME, docURL);
     params.put(Document.DOCUMENT_ENCODING_PARAMETER_NAME, "UTF-8");
-    params.put(Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/bdocsjson+gzip");
+    params.put(Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/old_bdocsjson+gzip");
     Document doc = (Document)Factory.createResource("gate.corpora.DocumentImpl", params);
     //System.err.println("DEBUG: BDOC expected text: "+expectedText);
     //System.err.println("DEBUG: BDOC text from doc: "+doc.getContent().toString());

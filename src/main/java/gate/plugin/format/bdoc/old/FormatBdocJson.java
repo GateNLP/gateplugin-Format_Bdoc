@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package gate.plugin.format.bdoc;
+package gate.plugin.format.bdoc.old;
 
 import gate.*;
 import gate.Resource;
@@ -29,31 +29,27 @@ import gate.creole.metadata.AutoInstance;
 import gate.creole.metadata.CreoleResource;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.GateDocumentUpdater;
-import gate.lib.basicdocument.docformats.MsgPack;
+import gate.lib.basicdocument.docformats.old.SimpleJson;
 import gate.util.DocumentFormatException;
-import gate.util.GateRuntimeException;
 import gate.util.InvalidOffsetException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import org.apache.log4j.Logger;
 
 /**
- * Read document in Bdoc MsgPack Format.
+ * Read document in Gzip-compressed Bdoc Simple Json Format.
  * 
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "GATE Bdoc/MsgPack Format", 
+        name = "OLD:GATE Bdoc/JSON Format", 
         isPrivate = true,
         autoinstances = {@AutoInstance(hidden = true)},
-        comment = "Format Bdoc/MsgPack",
+        comment = "OLD:Format Bdoc/JSON",
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class FormatBdocMsgPack extends DocumentFormat implements DirectLoadingDocumentFormat {
+public class FormatBdocJson extends DocumentFormat {
   
  
-  private static final long serialVersionUID = 687111234543563918L;
+  private static final long serialVersionUID = 687394803643563918L;
   
   /**
    * Does not support Repositioning.
@@ -74,10 +70,10 @@ public class FormatBdocMsgPack extends DocumentFormat implements DirectLoadingDo
    */
 @Override
   public Resource init() throws ResourceInstantiationException {
-    MimeType mime = new MimeType("application", "bdocmp");
+    MimeType mime = new MimeType("text", "old_bdocjs");
     mimeString2ClassHandlerMap.put(mime.getType() + "/" + mime.getSubtype(),this);
     mimeString2mimeTypeMap.put(mime.getType() + "/" + mime.getSubtype(), mime);
-    suffixes2mimeTypeMap.put("bdocmp", mime);
+    suffixes2mimeTypeMap.put("old_bdocjs", mime);
     setMimeType(mime);
     return this;
   }
@@ -91,7 +87,7 @@ public class FormatBdocMsgPack extends DocumentFormat implements DirectLoadingDo
     MimeType mime = getMimeType();  
     mimeString2ClassHandlerMap.remove(mime.getType() + "/" + mime.getSubtype());
     mimeString2mimeTypeMap.remove(mime.getType() + "/" + mime.getSubtype());  
-    suffixes2mimeTypeMap.remove("bdocmp");
+    suffixes2mimeTypeMap.remove("old_bdocjs");
   }
   
   /**
@@ -100,20 +96,10 @@ public class FormatBdocMsgPack extends DocumentFormat implements DirectLoadingDo
    * @throws DocumentFormatException if error
    */
   @Override
-  public void unpackMarkup(Document dcmnt) throws DocumentFormatException {    
-    MsgPack mp = new MsgPack();
-    URL sourceUrl = dcmnt.getSourceUrl();
-    System.err.println("DEBUG: source URL is "+sourceUrl);
-    System.err.println("DEBUG: document content: "+dcmnt.getContent());
-    if(sourceUrl == null) {
-      throw new GateRuntimeException("Source URL is null???");
-    }
-    BdocDocument bdoc;
-    try (InputStream is = sourceUrl.openStream()) {
-      bdoc = mp.load_doc(is);
-    } catch (IOException ex) {
-      throw new GateRuntimeException("Could not read MsgPack data from URL "+sourceUrl, ex);
-    }    
+  public void unpackMarkup(Document dcmnt) throws DocumentFormatException {
+    SimpleJson sj = new SimpleJson();
+    String json = dcmnt.getContent().toString();
+    BdocDocument bdoc = sj.loads_doc(json);
     DocumentContent newContent = new DocumentContentImpl(bdoc.text);
     try {
       dcmnt.edit(0L, dcmnt.getContent().size(), newContent);

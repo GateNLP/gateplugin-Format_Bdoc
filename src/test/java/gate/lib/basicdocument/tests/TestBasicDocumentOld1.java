@@ -30,7 +30,7 @@ import gate.lib.basicdocument.BdocAnnotation;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.BdocDocumentBuilder;
 import gate.lib.basicdocument.OffsetMapper;
-import gate.lib.basicdocument.docformats.SimpleJson;
+import gate.lib.basicdocument.docformats.old.SimpleJson;
 import gate.util.GateException;
 import gate.util.InvalidOffsetException;
 import java.io.File;
@@ -44,7 +44,7 @@ import org.junit.Test;
  * First set of simple tests.
  * @author Johann Petrak
  */
-public class TestBasicDocument1 extends TestCase {
+public class TestBasicDocumentOld1 extends TestCase {
   String sampleText1 = "This is a simple 💩 document. It has two sentences.";
   String sampleText2 = "A \uD83D\uDCA9 emoji";
   
@@ -107,7 +107,7 @@ public class TestBasicDocument1 extends TestCase {
     Assert.assertEquals("Token", bann3.type);
     
     String json = new SimpleJson().dumps(bdoc);
-    new SimpleJson().dump(bdoc, new File("test-doc1.bdocsjson"));
+    new SimpleJson().dump(bdoc, new File("test-doc1.old_bdocsjson"));
     
     
     // try to re-create Bdoc from JSON
