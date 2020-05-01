@@ -89,6 +89,7 @@ public class MsgPackFormatSupport implements FormatSupport {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public BdocDocument load_bdoc(InputStream is) {
     ObjectMapper objectMapper = initObjectMapper4Load();
     try {

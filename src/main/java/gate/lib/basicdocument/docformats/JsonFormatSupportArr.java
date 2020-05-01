@@ -43,11 +43,12 @@ public class JsonFormatSupportArr implements FormatSupport {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public BdocDocument load_bdoc(InputStream is) {
     ObjectMapper om = new ObjectMapper();
     List<Object> bdocAsList;
     try {
-      bdocAsList = om.readValue(is, List.class);
+      bdocAsList = (List<Object>)om.readValue(is, List.class);
     } catch (IOException ex) {
       throw new GateRuntimeException("Could not convert JSON array to Bdoc", ex);
     }

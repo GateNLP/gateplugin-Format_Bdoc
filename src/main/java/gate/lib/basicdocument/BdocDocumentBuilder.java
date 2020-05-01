@@ -52,7 +52,6 @@ public class BdocDocumentBuilder {
   HashMap<String,Set<Annotation>> includedSets = new HashMap<>();
   HashMap<String,Integer> nextAnnotationIds = new HashMap<>();
   HashMap<String, Object> includedFeatures = new HashMap<>();
-  File toFile = null;
   String offset_type = "j";
   List<JSON.Feature> addJSONFeatures = new ArrayList<>();
 

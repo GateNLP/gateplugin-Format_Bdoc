@@ -24,6 +24,7 @@ public abstract class BaseFormatBdoc
         extends DocumentFormat
         implements DirectLoadingDocumentFormat {
 
+  private static final long serialVersionUID = 776942555558L;
   /**
    * Does not support Repositioning.
    *
