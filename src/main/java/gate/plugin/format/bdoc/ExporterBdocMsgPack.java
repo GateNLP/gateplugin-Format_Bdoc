@@ -19,7 +19,6 @@
  */
 package gate.plugin.format.bdoc;
 
-import gate.plugin.format.bdoc.old.*;
 import gate.Document;
 import gate.DocumentExporter;
 import gate.FeatureMap;
@@ -31,7 +30,6 @@ import gate.lib.basicdocument.docformats.Format;
 import gate.lib.basicdocument.docformats.Saver;
 import java.io.IOException;
 import java.io.OutputStream;
-import gate.lib.basicdocument.docformats.old.SimpleJson;
 
 /**
  * Export document in Bdoc Simple Json Format.
@@ -65,10 +63,11 @@ public class ExporterBdocMsgPack extends DocumentExporter {
    */
   @Override
   public void export(Document dcmnt, OutputStream out, FeatureMap fm) throws IOException {
+    System.err.println("Exporting using "+this.getClass());    
     BdocDocumentBuilder builder = new BdocDocumentBuilder();
     builder.fromGate(dcmnt);
     BdocDocument bdoc = builder.buildBdoc();
-    new Saver().to(out).format(Format.JSON).save(bdoc);
+    new Saver().to(out).format(Format.MSGPACK).save(bdoc);
   }
   
   
