@@ -8,6 +8,7 @@ package gate.lib.basicdocument.docformats;
 import gate.lib.basicdocument.BdocDocument;
 import gate.util.GateRuntimeException;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class Loader {
   protected File file = null;
   protected URL url = null;
   protected InputStream is = null; 
+  protected String fromString = null;
   
   private void checkNoSrcAndSet() {
     if(haveSrc) {
@@ -69,6 +71,11 @@ public class Loader {
     this.url = url;
     return this;
   }
+  public Loader fromString(String json) {
+    checkNoSrcAndSet();
+    fromString = json;
+    return this;
+  }
   public Loader format(Format fmt) {
     checkNoFormatAndSet();
     format = fmt;
@@ -81,7 +88,12 @@ public class Loader {
   public BdocDocument load_bdoc() {
     checkHaveNeeded();
     try {
-      if(file != null) {
+      if(fromString != null) {
+        if(format == Format.MSGPACK) {
+          throw new GateRuntimeException("Cannot use MsgPack with String source");
+        }
+        is = new ByteArrayInputStream(fromString.getBytes("utf-8"));
+      } else if(file != null) {
         is = new BufferedInputStream(new FileInputStream(file));
       } else if(url != null) {
         is = url.openStream();

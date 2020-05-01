@@ -21,7 +21,7 @@ public class JsonFormatSupportMap implements FormatSupport {
     try {
       om.writeValue(os, bdoc);
     } catch (IOException ex) {
-      throw new GateRuntimeException("Could not convert Bdoc to JSON", ex);
+      throw new GateRuntimeException("Could not convert Bdoc to JSON map", ex);
     }
   }
 
@@ -32,7 +32,7 @@ public class JsonFormatSupportMap implements FormatSupport {
     try {
       bdoc = om.readValue(is, BdocDocument.class);
     } catch (IOException ex) {
-      throw new GateRuntimeException("Could not JSON to Bdoc", ex);
+      throw new GateRuntimeException("Could not convert JSON map to Bdoc", ex);
     }
     return bdoc;
   }

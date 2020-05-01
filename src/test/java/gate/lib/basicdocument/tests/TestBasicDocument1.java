@@ -30,10 +30,11 @@ import gate.lib.basicdocument.BdocAnnotation;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.BdocDocumentBuilder;
 import gate.lib.basicdocument.OffsetMapper;
-import gate.lib.basicdocument.docformats.old.SimpleJson;
+import gate.lib.basicdocument.docformats.Format;
+import gate.lib.basicdocument.docformats.Loader;
+import gate.lib.basicdocument.docformats.Saver;
 import gate.util.GateException;
 import gate.util.InvalidOffsetException;
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 import junit.framework.TestCase;
@@ -44,7 +45,7 @@ import org.junit.Test;
  * First set of simple tests.
  * @author Johann Petrak
  */
-public class TestBasicDocumentOld1 extends TestCase {
+public class TestBasicDocument1 extends TestCase {
   String sampleText1 = "This is a simple 💩 document. It has two sentences.";
   String sampleText2 = "A \uD83D\uDCA9 emoji";
   
@@ -106,12 +107,13 @@ public class TestBasicDocumentOld1 extends TestCase {
     Assert.assertEquals(18, bann3.end);     // !!! one less because python!
     Assert.assertEquals("Token", bann3.type);
     
-    String json = new SimpleJson().dumps(bdoc);
-    new SimpleJson().dump(bdoc, new File("test-doc1.old_bdocsjson"));
-    
-    
+    new Saver().format(Format.JSON_MAP).to("test-doc1.bdocjs").save(bdoc);
+    String json =
+            new Saver().format(Format.JSON_MAP).asString().save(bdoc);
+        
     // try to re-create Bdoc from JSON
-    BdocDocument bdoc2 = new SimpleJson().loads_doc(json);
+    BdocDocument bdoc2 = 
+            new Loader().format(Format.JSON_MAP).fromString(json).load_bdoc();
     Assert.assertNotNull(bdoc2.annotation_sets);
     System.err.println("annotation_sets: "+bdoc2.annotation_sets.getClass().getName());
     Assert.assertTrue(bdoc2.annotation_sets instanceof Map);

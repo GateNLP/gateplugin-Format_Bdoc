@@ -26,7 +26,7 @@ import static gate.cloud.io.IOConstants.PARAM_FILE_EXTENSION;
 import gate.cloud.io.file.AbstractFileOutputHandler;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.BdocDocumentBuilder;
-import gate.lib.basicdocument.docformats.old.SimpleJson;
+import gate.lib.basicdocument.docformats.JsonFormatSupportMap;
 import gate.util.GateException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -37,7 +37,7 @@ import java.util.Map;
  * 
  * @author Johann Petrak
  */
-public class BdocJsonOutputHandlerOld  extends AbstractFileOutputHandler {
+public class BdocJsonOutputHandler  extends AbstractFileOutputHandler {
   
   /**
    * Make sure the extension is set.
@@ -51,7 +51,7 @@ public class BdocJsonOutputHandlerOld  extends AbstractFileOutputHandler {
   {
     // make sure we default to .bdocjson as the extension
     if(!configData.containsKey(PARAM_FILE_EXTENSION)) {
-      configData.put(PARAM_FILE_EXTENSION, ".old_bdocjson");
+      configData.put(PARAM_FILE_EXTENSION, ".bdocjs");
     }
     super.configImpl(configData);
   }
@@ -67,12 +67,11 @@ public class BdocJsonOutputHandlerOld  extends AbstractFileOutputHandler {
   protected void outputDocumentImpl(Document dcmnt, DocumentID did) 
           throws IOException, GateException 
   {
-    SimpleJson sj = new SimpleJson();
     BdocDocumentBuilder builder = new BdocDocumentBuilder();
     builder.fromGate(dcmnt);
     BdocDocument bdoc = builder.buildBdoc();
     try ( OutputStream os = getFileOutputStream(did);) {
-      sj.dump(bdoc, os);      
+      new JsonFormatSupportMap().save(bdoc, os);
     }    
   }
   

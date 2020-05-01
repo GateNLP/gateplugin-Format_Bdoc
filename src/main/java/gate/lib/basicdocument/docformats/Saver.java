@@ -22,6 +22,7 @@ package gate.lib.basicdocument.docformats;
 import gate.lib.basicdocument.BdocDocument;
 import gate.util.GateRuntimeException;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class Saver {
 
   protected boolean haveDest = false;
   protected boolean haveFormat = false;
+  protected boolean toString = false;
   protected File file = null;
   protected OutputStream os = null; 
   
@@ -77,6 +79,11 @@ public class Saver {
     this.os = os;
     return this;
   }
+  public Saver asString() {
+    checkNoDestAndSet();
+    this.toString = true;
+    return this;
+  }
   public Saver format(Format fmt) {
     checkNoFormatAndSet();
     format = fmt;
@@ -86,12 +93,18 @@ public class Saver {
     gzipped = flag;
     return this;
   }
-  public void save(BdocDocument bdoc) throws IOException {
+  public String save(BdocDocument bdoc) {
     checkHaveNeeded();
     try {
-      if(os == null) {
+      String ret = null;
+      if(toString) {
+        if(format == Format.MSGPACK) {
+          throw new GateRuntimeException("Format MsgPack cannot be converted to String");
+        }
+        os = new ByteArrayOutputStream();
+      } else if(file != null) {
         os = new BufferedOutputStream(new FileOutputStream(file));
-      }
+      } // else: we already have the output stream
       if(gzipped) {
         os = new GZIPOutputStream(os);
       }
@@ -106,6 +119,10 @@ public class Saver {
           new MsgPackFormatSupport().save(bdoc, os);
           break;
       }
+      if(toString) {
+        ret = ((ByteArrayOutputStream)os).toString("utf-8");
+      }
+      return ret;
     } catch (IOException ex) {
       throw new GateRuntimeException("Could not write", ex);
     } finally {
