@@ -45,7 +45,7 @@ import java.io.OutputStream;
 )
 public class ExporterBdocMsgPack extends DocumentExporter {
 
-  private static final long serialVersionUID = 776942301543340368L;
+  private static final long serialVersionUID = 776944567543340368L;
 
   /**
    * Constructor.
@@ -63,7 +63,6 @@ public class ExporterBdocMsgPack extends DocumentExporter {
    */
   @Override
   public void export(Document dcmnt, OutputStream out, FeatureMap fm) throws IOException {
-    System.err.println("Exporting using "+this.getClass());    
     BdocDocumentBuilder builder = new BdocDocumentBuilder();
     builder.fromGate(dcmnt);
     BdocDocument bdoc = builder.buildBdoc();

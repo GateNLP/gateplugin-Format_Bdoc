@@ -58,6 +58,7 @@ public abstract class BaseFormatBdoc
   protected String mimeType;
   protected String mimeSubtype;
   protected String suffix;
+  protected String suffix2 = null;
   
   
   /**
@@ -73,6 +74,9 @@ public abstract class BaseFormatBdoc
     mimeString2ClassHandlerMap.put(mime.getType() + "/" + mime.getSubtype(), this);
     mimeString2mimeTypeMap.put(mime.getType() + "/" + mime.getSubtype(), mime);
     suffixes2mimeTypeMap.put(suffix, mime);
+    if(suffix2 != null) {
+      suffixes2mimeTypeMap.put(suffix2, mime);
+    }
     setMimeType(mime);
     return this;
   }
@@ -87,6 +91,9 @@ public abstract class BaseFormatBdoc
     mimeString2ClassHandlerMap.remove(mime.getType() + "/" + mime.getSubtype());
     mimeString2mimeTypeMap.remove(mime.getType() + "/" + mime.getSubtype());  
     suffixes2mimeTypeMap.remove(suffix);
+    if(suffix2 != null) {
+      suffixes2mimeTypeMap.remove(suffix2);
+    }
   }
   
 

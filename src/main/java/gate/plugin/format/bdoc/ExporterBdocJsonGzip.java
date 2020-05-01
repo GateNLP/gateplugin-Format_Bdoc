@@ -63,7 +63,6 @@ public class ExporterBdocJsonGzip extends DocumentExporter {
    */
   @Override
   public void export(Document dcmnt, OutputStream out, FeatureMap fm) throws IOException {
-    System.err.println("Exporting using "+this.getClass());
     BdocDocumentBuilder builder = new BdocDocumentBuilder();
     builder.fromGate(dcmnt);
     BdocDocument bdoc = builder.buildBdoc();

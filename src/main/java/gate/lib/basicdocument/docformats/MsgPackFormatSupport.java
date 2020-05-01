@@ -65,17 +65,13 @@ public class MsgPackFormatSupport implements FormatSupport {
       om.writeValue(os, bdoc.offset_type);
       om.writeValue(os, bdoc.text);
       om.writeValue(os, bdoc.features);
-      System.err.println("DEBUG: writing nr annsets: "+bdoc.annotation_sets.size());
       om.writeValue(os, bdoc.annotation_sets.size());
       for(Map.Entry<String,BdocAnnotationSet> e : bdoc.annotation_sets.entrySet()) {
-        System.err.println("DEBUG: writing annset name: "+e.getKey());
         om.writeValue(os, e.getKey());
         BdocAnnotationSet as = e.getValue();
         om.writeValue(os, as.next_annid);
-        System.err.println("DEBUG: writing nr anns: "+as.annotations.size());
         om.writeValue(os, as.annotations.size());
         for(BdocAnnotation ann : as.annotations) {
-          System.err.println("DEBUG writing annotation type "+ann.type);
           om.writeValue(os, ann.type);
           om.writeValue(os, ann.start);
           om.writeValue(os, ann.end);
@@ -106,16 +102,13 @@ public class MsgPackFormatSupport implements FormatSupport {
       bdoc.offset_type = objectMapper.readValue(is, String.class);
       bdoc.text = objectMapper.readValue(is, String.class);
       bdoc.features = objectMapper.readValue(is, Map.class);
-      System.err.println("DEBUG: got features from msgp: "+bdoc.features);
       int nannsets = objectMapper.readValue(is, Integer.class);
-      System.err.println("DEBUG: got nr annsets from msgp: "+nannsets);
       Map<String, BdocAnnotationSet> annsets = new HashMap<>();
       for(int i = 0; i<nannsets; i++) {
         String name = objectMapper.readValue(is, String.class);
         if(name == null) {
           name = "";
         }
-        System.err.println("DEBUG: annset name from msgp: "+name);
         BdocAnnotationSet as = new BdocAnnotationSet();
         as.next_annid = objectMapper.readValue(is, Integer.class);
         int nanns = objectMapper.readValue(is, Integer.class);
