@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2019 The University of Sheffield.
  *
- * This file is part of gatelib-basicdocument 
- * (see https://github.com/GateNLP/gatelib-basicdocument).
+ * This file is part of gateplugin-Format_Bdoc 
+ * (see https://github.com/GateNLP/gateplugin-Format_Bdoc).
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package gate.lib.basicdocument;
 
 import java.util.List;
