@@ -57,6 +57,7 @@ public class FormatBdocJsonGzip
     mimeType = "text";
     mimeSubtype = "bdocjs+gzip";
     suffix = "bdocjs.gz";
+    suffix2 = "bdocjson.gz";
   }
    
   private static final long serialVersionUID = 282334743535L;
