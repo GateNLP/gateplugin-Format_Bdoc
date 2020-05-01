@@ -22,6 +22,8 @@ package gate.lib.basicdocument;
 import com.fasterxml.jackson.jr.ob.JSON;
 import gate.Annotation;
 import gate.Document;
+import gate.lib.basicdocument.docformats.Format;
+import gate.lib.basicdocument.docformats.Saver;
 import gate.util.GateRuntimeException;
 import java.io.File;
 import java.io.IOException;
@@ -266,84 +268,50 @@ public class BdocDocumentBuilder {
       ret.annotation_sets = annotation_sets;
     }
     // do any offset fixup, if necessary
-
     ret.fixupOffsets(offset_type);
     return ret;
   }
   
+  
   /**
-   * Create a JSON builder instance with the JSON Features passed so far.
+   * Store the BdocDocument to a file.
    * 
-   * @return JSON builder
+   * @param path  where to store
    */
-  public JSON initialJSON() {
-    JSON jsonbuilder = JSON.std;
-    for (JSON.Feature feature : addJSONFeatures) {
-      jsonbuilder.with(feature);
-    }
-    jsonbuilder.with(JSON.Feature.HANDLE_JAVA_BEANS);
-    jsonbuilder.with(JSON.Feature.FORCE_REFLECTION_ACCESS);
-    jsonbuilder.with(JSON.Feature.WRITE_NULL_PROPERTIES);
-    jsonbuilder.without(JSON.Feature.USE_FIELDS);
+  public void toJson(File path) {
+    BdocDocument bdoc = buildBdoc();
+    new Saver().format(Format.JSON_MAP).to(path).save(bdoc);
+  }
+  
+  /**
+   * Store the BdocDocument to a file.
+   * 
+   * @param path  where to store
+   */
+  public void toJson(String path) {
+    BdocDocument bdoc = buildBdoc();
+    new Saver().format(Format.JSON_MAP).to(new File(path)).save(bdoc);
+  }
+  
+  /**
+   * Convert the BdocDocument to a JSON string.
+   * 
+   *
+   * @return JSON String
+   */
+  public String toJsonString() {
+    BdocDocument bdoc = buildBdoc();
+    return new Saver().format(Format.JSON_MAP).asString().save(bdoc);
+  }
+  
+  /**
+   * Write the BdocDocument to the output stream.
+   * 
+   * @param os stream to write to
+   */
+  public void toJson(OutputStream os) {
+    BdocDocument bdoc = buildBdoc();
+    new Saver().format(Format.JSON_MAP).to(os).save(bdoc);
+  }
     
-    return jsonbuilder;
-  }
-  
-  /**
-   * Serialise the BdocDocument built so far as JSON to the given File.
-   * 
-   * @param path where to write the JSON to
-   */
-  public void dump(File path) {
-    try {
-      BdocDocument jsondoc = buildBdoc();
-      initialJSON().write(jsondoc, toFile);
-    } catch (IOException ex) {
-      throw new RuntimeException("Could not build and save JSON", ex);
-    }
-  }
-  
-  /**
-   * Serialise the BdocDocument built so far as JSON to the given writer.
-   * 
-   * @param writer where to send the JSON to.
-   */
-  public void dump(Writer writer) {
-    try {
-      BdocDocument jsondoc = buildBdoc();
-      initialJSON().write(jsondoc, writer);
-    } catch (IOException ex) {
-      throw new RuntimeException("Could not build and save JSON", ex);
-    }
-  }
-  
-  /**
-   * Serialise the BdocDocument built so far as JSON to the given output stream.
-   * 
-   * @param ostream where to send the JSON to.
-   */
-  public void dump(OutputStream ostream) {
-    try {
-      BdocDocument jsondoc = buildBdoc();
-      initialJSON().write(jsondoc, ostream);
-    } catch (IOException ex) {
-      throw new RuntimeException("Could not build and save JSON", ex);
-    }
-  }
-  
-  
-  /**
-   * Serialise the BdocDocument built so far as JSON String.
-   * 
-   * @return the JSON representation of the BdocDocument.
-   */
-  public String dumps() {
-    try {
-      BdocDocument jsondoc = buildBdoc();
-      return initialJSON().asString(jsondoc);
-    } catch (IOException ex) {
-      throw new RuntimeException("Could not build JSON", ex);
-    }
-  }
-  
 }
