@@ -91,19 +91,22 @@ public class SimpleBenchmark {
   }
 
   public BenchData copyDocuments(List<File> inFiles, File outDir, String format, DocumentExporter exporter)
-          throws ResourceInstantiationException, XMLStreamException, IOException {
+          throws ResourceInstantiationException, XMLStreamException, IOException, InterruptedException {
     BenchData bd = new BenchData();
+    System.gc();
+    Thread.sleep(500);  // 0.5 seconds
     for (File inFile : inFiles) {
       File outFile = new File(outDir, inFile.getName() + "." + format);
       long start = System.nanoTime();
       Document doc = load(inFile);
       bd.load += (System.nanoTime() - start);
-      bd.n_load += 1;
+      bd.n_load += 1;      
       start = System.nanoTime();
       save(doc, outFile, exporter);
       bd.save += (System.nanoTime() - start);
       bd.n_save += 1;
       bd.size_save = FileUtils.sizeOf(outFile);
+      Factory.deleteResource(doc);
     }
     return bd;
   }
@@ -125,7 +128,7 @@ public class SimpleBenchmark {
    * To run this using maven, use something like:
    * <pre>
    * {@code
-   * mvn -Dexec.classpathScope=test test-compile exec:java -Dexec.mainClass="gate.plugin.format.bdoc.benchmarks.SimpleBenchmark" -Dexec.args="bench_in bench_out"
+   * JAVA_TOOL_OPTIONS="-Xmx5G -Xms5G" mvn -Dexec.classpathScope=test test-compile exec:java -Dexec.mainClass="gate.plugin.format.bdoc.benchmarks.SimpleBenchmark" -Dexec.args="bench_in bench_out"
    * }
    * </pre>
    *
@@ -133,7 +136,7 @@ public class SimpleBenchmark {
    * @throws java.io.IOException
    * @throws gate.util.GateException
    */
-  public static void main(String[] args) throws IOException, GateException, ResourceInstantiationException, XMLStreamException {
+  public static void main(String[] args) throws IOException, GateException, ResourceInstantiationException, XMLStreamException, InterruptedException {
     if (args.length != 2) {
       throw new RuntimeException("Need two parameters: inDir, workDir");
     }
