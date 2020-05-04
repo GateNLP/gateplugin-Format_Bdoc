@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.stream.XMLStreamException;
@@ -46,6 +47,8 @@ import org.apache.commons.io.FileUtils;
  */
 public class SimpleBenchmark {
 
+  public static final int ITERATIONS = 3;
+  
   public static class BenchData {
 
     public int n_load = 0;
@@ -98,11 +101,11 @@ public class SimpleBenchmark {
       File outFile = new File(outDir, inFile.getName() + "." + format);
       long start = System.currentTimeMillis();
       Document doc = load(inFile);
-      bd.load += (System.currentTimeMillis() - start) / 1000.0;
+      bd.load += (System.currentTimeMillis() - start);
       bd.n_load += 1;      
       start = System.currentTimeMillis();
       save(doc, outFile, exporter);
-      bd.save += (System.currentTimeMillis() - start) / 1000.0;
+      bd.save += (System.currentTimeMillis() - start);
       bd.n_save += 1;
       bd.size_save += FileUtils.sizeOf(outFile) / 1024.0;
       Factory.deleteResource(doc);
@@ -119,7 +122,7 @@ public class SimpleBenchmark {
   }
 
   public static String d2str(double val) {
-    return String.format("%.2f", val);
+    return String.format("%.3f", val);
   }
   
   
@@ -172,21 +175,21 @@ public class SimpleBenchmark {
     FileUtils.forceMkdir(outDir1);
     FileUtils.forceMkdir(outDir2);
 
-    Map<String, DocumentExporter> format2exporter = new HashMap<>();
+    Map<String, DocumentExporter> format2exporter = new LinkedHashMap<>();
     CreoleRegister cr = Gate.getCreoleRegister();
     format2exporter.put("xml", null);
     format2exporter.put("finf",
             (DocumentExporter) cr.get("gate.corpora.FastInfosetExporter").getInstantiations().iterator().next());
     format2exporter.put("bdocjs",
             (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocJson").getInstantiations().iterator().next());
-    format2exporter.put("bdocjs.gz",
-            (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocJsonGzip").getInstantiations().iterator().next());
-    format2exporter.put("bdocmp",
-            (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocMsgPack").getInstantiations().iterator().next());
     format2exporter.put("bdocsjs",
             (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocSimpleJson").getInstantiations().iterator().next());
+    format2exporter.put("bdocjs.gz",
+            (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocJsonGzip").getInstantiations().iterator().next());
     format2exporter.put("bdocsjs.gz",
             (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocSimpleJsonGzip").getInstantiations().iterator().next());
+    format2exporter.put("bdocmp",
+            (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocMsgPack").getInstantiations().iterator().next());
 
     // Get the list of all xml files in indir
     List<File> inFiles = bench.fileList(inDir);
@@ -205,13 +208,13 @@ public class SimpleBenchmark {
     // * every format is written to outDir1 once
     // * every format is read from outDir1 5 times
     // * every format is written to outDir2 5 times
-    Map<String, BenchData> format2data = new HashMap<>();
+    Map<String, BenchData> format2data = new LinkedHashMap<>();
     for (String fmt : format2exporter.keySet()) {
       format2data.put(fmt, new BenchData());
     }
 
     // outermost loop: run everything 10 times
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < ITERATIONS; i++) {
       // outer loop: read from inDir and write to outDir1
       for (String fmt_from : format2exporter.keySet()) {
         System.err.println("Iteration " + i + " - Reading XML and writing format " + fmt_from + " to "+outDir1);
@@ -232,9 +235,38 @@ public class SimpleBenchmark {
         }
       }
     }
-    File tsvFile = new File(outDir, "bench.tsv");
-    try (FileOutputStream fos = new FileOutputStream(tsvFile);
+
+    // Normalize to per run and per document
+    for (String fmt : format2data.keySet()) {
+        BenchData data = format2data.get(fmt);
+        // first check that we loaded as many times as we saved
+        if(data.n_load != data.n_save) {
+          System.err.println(
+                  "ERROR: n load/save differs for "+fmt+": "+
+                  data.n_load+"/"+data.n_save);
+        }
+        int n_total = data.n_load; // this should be ITERATIONS times n
+        if(n_total != ITERATIONS * n * format2data.size() ) {
+          System.err.println("ERROR: odd number of total saves/loads: "+
+                  n_total + " but expected to be "+ (ITERATIONS*n));
+        }
+        data.save = (data.save / n_total);
+        data.load = (data.load / n_total);
+        data.size_save = (data.size_save / n_total);
+    }
+    
+    File mdFile = new File(outDir, "bench.md");
+    try (FileOutputStream fos = new FileOutputStream(mdFile);
             PrintStream ps = new PrintStream(fos)) {
+      ps.println("## Benchmark Result");
+      ps.println("* Benchmark for directory: "+inDir);
+      ps.println("* Number of documents: "+n);
+      ps.println("* Number of formats: "+format2data.size());
+      ps.println("* Number of iterations: "+ITERATIONS);
+      ps.println("* Total number of load/save per doc: "+(ITERATIONS*format2data.size()));
+      ps.println("* load/save: average ms per document");
+      ps.println("* size: average kB per document");
+      ps.println();
       ps.println("| Format | load | save | size | ");
       ps.println("| ------ | ---- | ---- | ---- | ");
       for (String fmt : format2data.keySet()) {
@@ -251,9 +283,9 @@ public class SimpleBenchmark {
         ps.println();
       }
     }
-    System.err.println("Created file " + tsvFile);
-    File mdFile = new File(outDir, "bench.md");
-    try (FileOutputStream fos = new FileOutputStream(mdFile);
+    System.err.println("Created file " + mdFile);
+    File tsvFile = new File(outDir, "bench.tsv");
+    try (FileOutputStream fos = new FileOutputStream(tsvFile);
             PrintStream ps = new PrintStream(fos)) {
       ps.println("Format\tload\tsave\tsize");
       for (String fmt : format2data.keySet()) {
@@ -266,9 +298,10 @@ public class SimpleBenchmark {
         ps.print("\t");
         ps.print(d2str(data.size_save));
         ps.println();
+        System.out.println(fmt+": load="+d2str(data.load)+", save="+d2str(data.save)+", size="+d2str(data.size_save));
       }
     }
-    System.err.println("Created file " + mdFile);
+    System.err.println("Created file " + tsvFile);
 
   }
 }
