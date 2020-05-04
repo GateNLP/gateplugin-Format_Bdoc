@@ -27,7 +27,6 @@ import gate.FeatureMap;
 import gate.Gate;
 import gate.creole.Plugin;
 import gate.creole.ResourceInstantiationException;
-import gate.lib.basicdocument.BdocDocument;
 import gate.util.GateException;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,9 +50,9 @@ public class SimpleBenchmark {
 
     public int n_load = 0;
     public int n_save = 0;
-    public long load = 0L;
-    public long save = 0L;
-    public long size_save = 0l;
+    public double load = 0.0;  // seconds
+    public double save = 0.0;  // seconds
+    public double size_save = 0.0;  // kb
 
     public void add(BenchData other) {
       n_load += other.n_load;
@@ -97,15 +96,15 @@ public class SimpleBenchmark {
     Thread.sleep(500);  // 0.5 seconds
     for (File inFile : inFiles) {
       File outFile = new File(outDir, inFile.getName() + "." + format);
-      long start = System.nanoTime();
+      long start = System.currentTimeMillis();
       Document doc = load(inFile);
-      bd.load += (System.nanoTime() - start);
+      bd.load += (System.currentTimeMillis() - start) / 1000.0;
       bd.n_load += 1;      
-      start = System.nanoTime();
+      start = System.currentTimeMillis();
       save(doc, outFile, exporter);
-      bd.save += (System.nanoTime() - start);
+      bd.save += (System.currentTimeMillis() - start) / 1000.0;
       bd.n_save += 1;
-      bd.size_save = FileUtils.sizeOf(outFile);
+      bd.size_save += FileUtils.sizeOf(outFile) / 1024.0;
       Factory.deleteResource(doc);
     }
     return bd;
@@ -119,6 +118,11 @@ public class SimpleBenchmark {
     return dirFiles;
   }
 
+  public static String d2str(double val) {
+    return String.format("%.2f", val);
+  }
+  
+  
   /**
    * Run the benchmarks.Need 2 parameters: input directory with pre-annotated
    * GATE documents in xml format; empty working directory
@@ -231,33 +235,36 @@ public class SimpleBenchmark {
     File tsvFile = new File(outDir, "bench.tsv");
     try (FileOutputStream fos = new FileOutputStream(tsvFile);
             PrintStream ps = new PrintStream(fos)) {
-      ps.println("Format\tload\tsave\tsize");
+      ps.println("| Format | load | save | size | ");
+      ps.println("| ------ | ---- | ---- | ---- | ");
       for (String fmt : format2data.keySet()) {
         BenchData data = format2data.get(fmt);
+        ps.print("| ");
         ps.print(fmt);
-        ps.print("\t");
-        ps.print(data.load);
-        ps.print("\t");
-        ps.print(data.save);
-        ps.print("\t");
-        ps.print(data.size_save);
+        ps.print(" | ");
+        ps.print(d2str(data.load));
+        ps.print(" | ");
+        ps.print(d2str(data.save));
+        ps.print(" | ");
+        ps.print(d2str(data.size_save));
+        ps.print(" |");
         ps.println();
       }
     }
     System.err.println("Created file " + tsvFile);
     File mdFile = new File(outDir, "bench.md");
-    try (FileOutputStream fos = new FileOutputStream(new File(outDir, "bench.tsv"));
+    try (FileOutputStream fos = new FileOutputStream(mdFile);
             PrintStream ps = new PrintStream(fos)) {
       ps.println("Format\tload\tsave\tsize");
       for (String fmt : format2data.keySet()) {
         BenchData data = format2data.get(fmt);
         ps.print(fmt);
         ps.print("\t");
-        ps.print(data.load);
+        ps.print(d2str(data.load));
         ps.print("\t");
-        ps.print(data.save);
+        ps.print(d2str(data.save));
         ps.print("\t");
-        ps.print(data.size_save);
+        ps.print(d2str(data.size_save));
         ps.println();
       }
     }
