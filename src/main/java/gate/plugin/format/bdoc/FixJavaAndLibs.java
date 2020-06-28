@@ -43,9 +43,6 @@ public class FixJavaAndLibs {
     public FixedSlf4JLogger(String name) {
       logger = LoggerFactory.getLogger(name);
     }
-    public FixedSlf4JLogger(Class clazz) {
-      logger = LoggerFactory.getLogger(clazz);
-    }
     public void setLevel(int level) {
       this.level = level;
     }

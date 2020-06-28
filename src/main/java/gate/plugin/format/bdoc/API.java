@@ -46,7 +46,10 @@ import javax.swing.Action;
 @CreoleResource(name = "Format Bdoc API Executor", tool=true, autoinstances = @AutoInstance)
 public class API extends ResourceHelper {
   
+  private static final long serialVersionUID = 776874654360368L;
+  
   @Override
+  @SuppressWarnings("unchecked") 
   public Object call(String action, Resource resource, Object... params) {
     BdocDocument bdoc;
     Document gdoc;

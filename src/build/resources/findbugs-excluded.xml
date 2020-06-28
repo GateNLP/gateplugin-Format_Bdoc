@@ -38,7 +38,9 @@
          <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
 
          <!-- never read by us, but by others, shut up -->
-         <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+	 <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+
+	 <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
 
       </Or>
    </Match>

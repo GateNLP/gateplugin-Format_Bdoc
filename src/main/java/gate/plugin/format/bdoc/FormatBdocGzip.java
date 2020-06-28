@@ -65,7 +65,7 @@ public class FormatBdocGzip
   /**
    * Logger.
    */
-  public transient FixedSlf4JLogger logger = new FixedSlf4JLogger(this.getClass());
+  public transient FixedSlf4JLogger logger = new FixedSlf4JLogger(this.getClass().getName());
   
   /**
    * Method to read a file with this format.
