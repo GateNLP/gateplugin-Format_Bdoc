@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
-import org.apache.log4j.Logger;
+import gate.plugin.format.bdoc.FixJavaAndLibs.FixedSlf4JLogger;
 
 /**
  * Read a document in gzipped "bdoc" format.
@@ -65,7 +65,7 @@ public class FormatBdocGzip
   /**
    * Logger.
    */
-  public transient Logger logger = Logger.getLogger(this.getClass());
+  public transient FixedSlf4JLogger logger = new FixedSlf4JLogger(this.getClass());
   
   /**
    * Method to read a file with this format.
@@ -74,7 +74,7 @@ public class FormatBdocGzip
    */
   @Override
   public void unpackMarkup(Document dcmnt) throws DocumentFormatException {
-    System.err.println("Unpacking using "+this.getClass());    
+    logger.info("Unpacking using "+this.getClass());    
     URL sourceUrl = dcmnt.getSourceUrl();
     if(sourceUrl == null) {
       throw new GateRuntimeException("Source URL is null");
