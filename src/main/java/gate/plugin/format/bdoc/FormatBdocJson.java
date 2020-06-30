@@ -58,6 +58,7 @@ public class FormatBdocJson
     mimeSubtype = "bdocjs";
     suffix = "bdocjs";
     suffix2 = "bdocjson"; // for legacy use
+    suffix3 = "bdocsjson";
   }
    
   private static final long serialVersionUID = 28234743535L;

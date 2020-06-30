@@ -79,8 +79,22 @@ public class ChangeLog {
   }
 
   /**
+   * Create a ChangeLog from the raw Map we can get from JSON.
+   * 
+   * @param map the Map object
+   * @return ChangeLog instance
+   */
+  public static ChangeLog fromMap(Map<String,Object> map) {
+    ChangeLog log = new ChangeLog();
+    log.changes = (List<Map<String, Object>>)map.get("changes");
+    log.offset_type = (String)map.get("offset_type");
+    log.gatenlp_type = "ChangeLog";  // TODO: REMOVE!!
+    return log;
+  }
+  
+  /**
    * Type identifier.
    */
-  public String gatenlp_type = "ChangeLog";
+  public String gatenlp_type = "ChangeLog"; // TODO: REMOVE!
   
 }

@@ -59,6 +59,7 @@ public abstract class BaseFormatBdoc
   protected String mimeSubtype;
   protected String suffix;
   protected String suffix2 = null;
+  protected String suffix3 = null;
   
   
   /**
@@ -76,6 +77,9 @@ public abstract class BaseFormatBdoc
     suffixes2mimeTypeMap.put(suffix, mime);
     if(suffix2 != null) {
       suffixes2mimeTypeMap.put(suffix2, mime);
+    }
+    if(suffix3 != null) {
+      suffixes2mimeTypeMap.put(suffix3, mime);
     }
     setMimeType(mime);
     return this;

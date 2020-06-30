@@ -20,7 +20,9 @@
 
 package gate.lib.basicdocument;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Representation of an annotaton set.
@@ -53,5 +55,15 @@ public class BdocAnnotationSet {
    * Type identifier.
    */
   public String gatenlp_type = "AnnotationSet";
+  
+  
+  public Map<String, Object> toMap() {
+    Map<String, Object> map = new HashMap<>();
+    map.put("annotations", this.annotations);
+    map.put("gatenlp_type", this.gatenlp_type);
+    map.put("name", this.name);
+    map.put("next_annid", this.next_annid);
+    return map;
+  }
   
 }

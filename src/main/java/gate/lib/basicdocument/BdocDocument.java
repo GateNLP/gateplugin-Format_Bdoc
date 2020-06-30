@@ -21,6 +21,7 @@
 package gate.lib.basicdocument;
 
 import gate.Document;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -117,5 +118,20 @@ public class BdocDocument
   public Document toGateDocument() {
     return new GateDocumentUpdater(this.text).fromBdoc(this);
   }
+  
+  public Map<String, Object> toMap() {
+    Map<String, Object> map = new HashMap<>();
+    Map<String, Map<String, Object>> ass = new HashMap<>();
+    for(Map.Entry<String, BdocAnnotationSet> e : this.annotation_sets.entrySet()) {
+      ass.put(e.getKey(), e.getValue().toMap());
+    }
+    map.put("annotation_sets", ass);
+    map.put("features", this.features);
+    map.put("gatenlp_type", this.gatenlp_type);
+    map.put("offset_type", this.offset_type);
+    map.put("text", this.text);
+    return map;
+  }
+ 
   
 }
