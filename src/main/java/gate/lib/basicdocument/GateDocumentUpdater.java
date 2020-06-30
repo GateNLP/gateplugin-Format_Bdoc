@@ -455,7 +455,13 @@ public class GateDocumentUpdater {
             if (annset != null) {
               Annotation ann = annset.get(id);
               if (ann == null) {
-                throw new RuntimeException("Annotation does not exist with id " + id);
+                // IMPORTANT: this is silently ignored because the changelog can
+                // sometimes contain feature changes for annotations which are
+                // not in the set any longer. This happens if an annotation gets
+                // removed from the set, but still exists as an annotation
+                // and somebody sets a feature on that annotation. 
+                // throw new RuntimeException("Annotation does not exist with id " + id);
+
               } else {
                 ann.getFeatures().put(feature, value);
               }

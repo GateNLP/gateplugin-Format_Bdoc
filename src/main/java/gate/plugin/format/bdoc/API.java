@@ -58,7 +58,7 @@ public class API extends ResourceHelper {
         String json = (String)params[0];
         bdoc = new Loader().from(json).load_bdoc();
         return bdoc;
-      case "update_document":
+      case "update_document":        
         gdoc = (Document)resource;
         bdoc = (BdocDocument)params[0];
         DocumentContent newContent = new DocumentContentImpl(bdoc.text);
