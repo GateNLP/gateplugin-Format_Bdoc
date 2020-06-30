@@ -36,9 +36,14 @@ import java.io.OutputStream;
  */
 public class JsonFormatSupportMap implements FormatSupport {
 
+  private ObjectMapper om;
+  
+  public JsonFormatSupportMap() {
+    om = new ObjectMapper();
+  }
+  
   @Override
   public void save(BdocDocument bdoc, OutputStream os) {
-    ObjectMapper om = new ObjectMapper();
     try {
       om.writeValue(os, bdoc);
     } catch (IOException ex) {
@@ -48,7 +53,6 @@ public class JsonFormatSupportMap implements FormatSupport {
 
   @Override
   public BdocDocument load_bdoc(InputStream is) {
-    ObjectMapper om = new ObjectMapper();
     BdocDocument bdoc;
     try {
       bdoc = om.readValue(is, BdocDocument.class);
@@ -60,7 +64,13 @@ public class JsonFormatSupportMap implements FormatSupport {
 
   @Override
   public ChangeLog load_log(InputStream is) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    ChangeLog log;
+    try {
+      log = om.readValue(is, ChangeLog.class);
+    } catch (IOException ex) {
+      throw new GateRuntimeException("Could not convert JSON map to ChangeLog", ex);
+    }
+    return log;    
   }
 
 

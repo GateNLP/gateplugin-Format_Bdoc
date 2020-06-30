@@ -62,7 +62,6 @@ public class MsgPackFormatSupport implements FormatSupport {
     ObjectMapper om = initObjectMapper4Dump();
     try {
       om.writeValue(os, VERSION); 
-      om.writeValue(os, bdoc.gatenlp_type);
       om.writeValue(os, bdoc.offset_type);
       om.writeValue(os, bdoc.text);
       om.writeValue(os, bdoc.features);
@@ -96,10 +95,6 @@ public class MsgPackFormatSupport implements FormatSupport {
       }
       BdocDocument bdoc = new BdocDocument();
       // we expect to be ready at this point to read everything after the version string
-      String typestr = objectMapper.readValue(is, String.class);
-      if(!"Document".equals(typestr)) {
-        throw new GateRuntimeException("Did not get expected type: Document but "+typestr);
-      }
       bdoc.offset_type = objectMapper.readValue(is, String.class);
       bdoc.text = objectMapper.readValue(is, String.class);
       bdoc.features = objectMapper.readValue(is, Map.class);
