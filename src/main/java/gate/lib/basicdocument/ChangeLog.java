@@ -84,6 +84,7 @@ public class ChangeLog {
    * @param map the Map object
    * @return ChangeLog instance
    */
+  @SuppressWarnings("unchecked")
   public static ChangeLog fromMap(Map<String,Object> map) {
     ChangeLog log = new ChangeLog();
     log.changes = (List<Map<String, Object>>)map.get("changes");
