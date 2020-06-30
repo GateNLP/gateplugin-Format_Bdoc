@@ -21,6 +21,7 @@
 package gate.lib.basicdocument.docformats;
 
 import gate.lib.basicdocument.BdocDocument;
+import gate.lib.basicdocument.ChangeLog;
 import gate.util.GateRuntimeException;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -119,8 +120,6 @@ public class Loader {
       switch (format) {
         case JSON_MAP:
           return new JsonFormatSupportMap().load_bdoc(is);
-        case JSON_ARR:
-          return new JsonFormatSupportArr().load_bdoc(is);
         default:
           return new MsgPackFormatSupport().load_bdoc(is);
       }
@@ -137,4 +136,42 @@ public class Loader {
     }
     
   }
+  
+    public ChangeLog load_log() {
+    checkHaveNeeded();
+    try {
+      if(fromString != null) {
+        if(format == Format.MSGPACK) {
+          throw new GateRuntimeException("Cannot use MsgPack with String source");
+        }
+        is = new ByteArrayInputStream(fromString.getBytes("utf-8"));
+      } else if(file != null) {
+        is = new BufferedInputStream(new FileInputStream(file));
+      } else if(url != null) {
+        is = url.openStream();
+      }
+      if(gzipped) {
+        is = new GZIPInputStream(is);
+      }
+      switch (format) {
+        case JSON_MAP:
+          return new JsonFormatSupportMap().load_log(is);
+        default:
+          return new MsgPackFormatSupport().load_log(is);
+      }
+    } catch (IOException ex) {
+      throw new GateRuntimeException("Could not write", ex);
+    } finally {
+      if(is != null) {
+        try {
+          is.close();
+        } catch(IOException ex) {
+          // ignore
+        }
+      }
+    }
+    
+  }
+
+  
 }

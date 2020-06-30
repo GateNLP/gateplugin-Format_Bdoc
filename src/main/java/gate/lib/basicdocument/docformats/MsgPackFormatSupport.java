@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gate.lib.basicdocument.BdocAnnotation;
 import gate.lib.basicdocument.BdocAnnotationSet;
 import gate.lib.basicdocument.BdocDocument;
+import gate.lib.basicdocument.ChangeLog;
 import gate.util.GateRuntimeException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -133,6 +134,11 @@ public class MsgPackFormatSupport implements FormatSupport {
     }
         
     
+  }
+
+  @Override
+  public ChangeLog load_log(InputStream is) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
 }

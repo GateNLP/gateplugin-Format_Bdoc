@@ -91,8 +91,10 @@ public class FormatBdoc
       System.err.println(buf[0]);
       if(buf[0] == 123) { // ascii for "{"
         fmt = Format.JSON_MAP;
-      } else if (buf[0] == 91) { // ascii for "["
-        fmt = Format.JSON_ARR;
+      // TODO: in case we want to support a serialization format that uses
+      // a json array instead of map
+      //} else if (buf[0] == 91) { // ascii for "["
+      //  fmt = Format.JSON_ARR;
       } else {
         fmt = Format.MSGPACK;
       }

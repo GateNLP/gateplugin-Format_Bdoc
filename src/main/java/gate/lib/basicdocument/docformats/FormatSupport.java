@@ -22,6 +22,7 @@
 package gate.lib.basicdocument.docformats;
 
 import gate.lib.basicdocument.BdocDocument;
+import gate.lib.basicdocument.ChangeLog;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -41,4 +42,5 @@ import java.io.OutputStream;
 public interface FormatSupport {
   public void save(BdocDocument bdoc, OutputStream os);
   public BdocDocument load_bdoc(InputStream is);
+  public ChangeLog    load_log(InputStream is);
 }

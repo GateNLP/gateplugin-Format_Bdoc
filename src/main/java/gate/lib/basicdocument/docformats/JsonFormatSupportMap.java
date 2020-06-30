@@ -23,6 +23,7 @@ package gate.lib.basicdocument.docformats;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gate.lib.basicdocument.BdocDocument;
+import gate.lib.basicdocument.ChangeLog;
 import gate.util.GateRuntimeException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,6 +56,11 @@ public class JsonFormatSupportMap implements FormatSupport {
       throw new GateRuntimeException("Could not convert JSON map to Bdoc", ex);
     }
     return bdoc;
+  }
+
+  @Override
+  public ChangeLog load_log(InputStream is) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
 

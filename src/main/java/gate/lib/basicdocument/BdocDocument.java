@@ -22,7 +22,6 @@ package gate.lib.basicdocument;
 
 import gate.Document;
 import java.util.Map;
-import org.apache.log4j.Logger;
 
 
 /**
@@ -36,9 +35,6 @@ import org.apache.log4j.Logger;
  */
 public class BdocDocument
 {
-
-  private static final Logger LOGGER = 
-          Logger.getLogger(BdocDocument.class.getName());
 
   /**
    * Document features. 

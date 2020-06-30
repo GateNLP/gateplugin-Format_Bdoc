@@ -112,9 +112,6 @@ public class Saver {
         case JSON_MAP:
           new JsonFormatSupportMap().save(bdoc, os);
           break;
-        case JSON_ARR:
-          new JsonFormatSupportArr().save(bdoc, os);
-          break;
         default:
           new MsgPackFormatSupport().save(bdoc, os);
           break;
