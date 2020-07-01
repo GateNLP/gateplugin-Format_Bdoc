@@ -79,6 +79,9 @@ public class API extends ResourceHelper {
     String json;
     Map<String,Object> map;
     switch(action) {
+      case "json_from_doc":
+        gdoc = (Document)resource;
+        return new BdocDocumentBuilder().fromGate(gdoc).toJsonString();
       case "fmap_to_map":
         FeatureMap fm = (FeatureMap)params[0];
         return BdocUtils.featureMap2Map(fm, null);
