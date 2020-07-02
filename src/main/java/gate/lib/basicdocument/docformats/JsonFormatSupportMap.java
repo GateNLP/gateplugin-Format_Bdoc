@@ -21,6 +21,7 @@
 
 package gate.lib.basicdocument.docformats;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.ChangeLog;
@@ -40,6 +41,8 @@ public class JsonFormatSupportMap implements FormatSupport {
   
   public JsonFormatSupportMap() {
     om = new ObjectMapper();
+    om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+    om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
   }
   
   @Override
@@ -47,6 +50,7 @@ public class JsonFormatSupportMap implements FormatSupport {
     try {
       om.writeValue(os, bdoc);
     } catch (IOException ex) {
+      ex.printStackTrace(System.err);
       throw new GateRuntimeException("Could not convert Bdoc to JSON map", ex);
     }
   }
@@ -57,6 +61,7 @@ public class JsonFormatSupportMap implements FormatSupport {
     try {
       bdoc = om.readValue(is, BdocDocument.class);
     } catch (IOException ex) {
+      ex.printStackTrace(System.err);
       throw new GateRuntimeException("Could not convert JSON map to Bdoc", ex);
     }
     return bdoc;
@@ -68,6 +73,7 @@ public class JsonFormatSupportMap implements FormatSupport {
     try {
       log = om.readValue(is, ChangeLog.class);
     } catch (IOException ex) {
+      ex.printStackTrace(System.err);
       throw new GateRuntimeException("Could not convert JSON map to ChangeLog", ex);
     }
     return log;    
