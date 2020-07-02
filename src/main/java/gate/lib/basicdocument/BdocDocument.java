@@ -103,11 +103,6 @@ public class BdocDocument
   }
   
   /**
-   * Type identifier.
-   */
-  public String gatenlp_type = "Document";
-
-  /**
    * Convert this BdocDocument instance to a GATE document. 
    * 
    * This will include all the parts present in the BdocDocument.
@@ -127,7 +122,6 @@ public class BdocDocument
     }
     map.put("annotation_sets", ass);
     map.put("features", this.features);
-    map.put("gatenlp_type", this.gatenlp_type);
     map.put("offset_type", this.offset_type);
     map.put("text", this.text);
     return map;

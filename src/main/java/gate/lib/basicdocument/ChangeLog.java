@@ -89,13 +89,7 @@ public class ChangeLog {
     ChangeLog log = new ChangeLog();
     log.changes = (List<Map<String, Object>>)map.get("changes");
     log.offset_type = (String)map.get("offset_type");
-    log.gatenlp_type = "ChangeLog";  // TODO: REMOVE!!
     return log;
   }
-  
-  /**
-   * Type identifier.
-   */
-  public String gatenlp_type = "ChangeLog"; // TODO: REMOVE!
   
 }
