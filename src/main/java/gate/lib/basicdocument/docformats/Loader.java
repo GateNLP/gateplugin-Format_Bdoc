@@ -124,7 +124,7 @@ public class Loader {
           return new MsgPackFormatSupport().load_bdoc(is);
       }
     } catch (IOException ex) {
-      throw new GateRuntimeException("Could not write", ex);
+      throw new GateRuntimeException("Could not load", ex);
     } finally {
       if(is != null) {
         try {
@@ -160,7 +160,7 @@ public class Loader {
           return new MsgPackFormatSupport().load_log(is);
       }
     } catch (IOException ex) {
-      throw new GateRuntimeException("Could not write", ex);
+      throw new GateRuntimeException("Could not load", ex);
     } finally {
       if(is != null) {
         try {

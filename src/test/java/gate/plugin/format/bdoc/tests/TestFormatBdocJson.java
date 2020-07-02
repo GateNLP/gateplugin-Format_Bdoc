@@ -25,13 +25,52 @@ import java.net.URL;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
+import gate.plugin.format.bdoc.ExporterBdocJson;
+import gate.plugin.format.bdoc.ExporterBdocMsgPack;
 import gate.test.GATEPluginTestCase;
+import gate.util.GateException;
+import java.io.File;
+import java.io.IOException;
+import static junit.framework.TestCase.assertEquals;
 /**
  * Test the FormatBdcoJson class.
  * @author Johann Petrak
  */
 public class TestFormatBdocJson extends GATEPluginTestCase {
   String expectedText = "A simple \uD83D\uDCA9 document.";
+  private static final String TMPTESTFILE = "tmp4testing-doc1.bdocjs";
+
+  
+  /**
+   * Test.Direct save/load.
+   * 
+   * @throws gate.creole.ResourceInstantiationException error
+   * @throws java.io.IOException error
+   */
+  public void testSaveLoadDocument2() throws GateException, IOException {
+    Document doc1 = Utils.makeTestDocument1();
+    ExporterBdocJson exp = 
+            (ExporterBdocJson)gate.Gate.getCreoleRegister().
+                    getAllInstances("gate.plugin.format.bdoc.ExporterBdocJson").
+                    iterator().next();
+    exp.export(doc1, new File(TMPTESTFILE), Factory.newFeatureMap());
+    FeatureMap parms = Factory.newFeatureMap();
+    parms.put("sourceUrl", new File(TMPTESTFILE).toURI().toURL());      
+    Document doc2 = (Document)Factory.createResource("gate.corpora.DocumentImpl", parms);
+    assertEquals(Utils.CONTENT1, doc2.getContent().toString());
+    assertEquals(1, doc2.getFeatures().get("docfeat1"));
+    assertEquals("docfeatvalue", doc2.getFeatures().get("docfeat2"));
+    AnnotationSet anns = doc2.getAnnotations();
+    assertEquals(1, anns.size());
+    Annotation ann = anns.iterator().next();
+    assertEquals("ANN", ann.getType());
+    assertEquals(1, ann.getFeatures().get("ann1feat1"));
+    assertEquals("annfeatvalue", ann.getFeatures().get("ann1feat2"));
+    assertEquals((long)ann.getStartNode().getOffset(), 30L);
+    assertEquals((long)ann.getEndNode().getOffset(), 35L);
+  }
+  
+  
   /**
    * Test.
    * @throws Exception  if error

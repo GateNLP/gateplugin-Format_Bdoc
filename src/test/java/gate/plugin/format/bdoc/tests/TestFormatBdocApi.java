@@ -19,12 +19,8 @@
  */
 
 package gate.plugin.format.bdoc.tests;
-import gate.Annotation;
-import gate.AnnotationSet;
-import java.net.URL;
 import gate.Document;
 import gate.Factory;
-import gate.FeatureMap;
 import gate.Gate;
 import gate.gui.ResourceHelper;
 import gate.test.GATEPluginTestCase;

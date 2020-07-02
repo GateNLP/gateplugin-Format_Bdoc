@@ -45,38 +45,45 @@ public class MsgPackFormatSupport implements FormatSupport {
 
   public static final String VERSION = "sm1"; // Simple MsgPack 1
   
-  protected ObjectMapper initObjectMapper4Dump() {
+  private ObjectMapper initObjectMapper4Dump() {
     ObjectMapper om = new ObjectMapper(new MessagePackFactory());
     om.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
     return om;
   }
-  protected ObjectMapper initObjectMapper4Load() {
+  private ObjectMapper initObjectMapper4Load() {
     ObjectMapper om = new ObjectMapper(new MessagePackFactory());
     om.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
     return om;
   }  
   
+  public MsgPackFormatSupport() {
+    omLoad = initObjectMapper4Load();
+    omDump = initObjectMapper4Dump();
+  }
+  
+  ObjectMapper omLoad;
+  ObjectMapper omDump;
   
   @Override
   public void save(BdocDocument bdoc, OutputStream os) {
-    ObjectMapper om = initObjectMapper4Dump();
     try {
-      om.writeValue(os, VERSION); 
-      om.writeValue(os, bdoc.offset_type);
-      om.writeValue(os, bdoc.text);
-      om.writeValue(os, bdoc.features);
-      om.writeValue(os, bdoc.annotation_sets.size());
+      omDump.writeValue(os, VERSION); 
+      
+      omDump.writeValue(os, bdoc.offset_type);
+      omDump.writeValue(os, bdoc.text);
+      omDump.writeValue(os, bdoc.features);
+      omDump.writeValue(os, bdoc.annotation_sets.size());
       for(Map.Entry<String,BdocAnnotationSet> e : bdoc.annotation_sets.entrySet()) {
-        om.writeValue(os, e.getKey());
+        omDump.writeValue(os, e.getKey());
         BdocAnnotationSet as = e.getValue();
-        om.writeValue(os, as.next_annid);
-        om.writeValue(os, as.annotations.size());
+        omDump.writeValue(os, as.next_annid);
+        omDump.writeValue(os, as.annotations.size());
         for(BdocAnnotation ann : as.annotations) {
-          om.writeValue(os, ann.type);
-          om.writeValue(os, ann.start);
-          om.writeValue(os, ann.end);
-          om.writeValue(os, ann.id);
-          om.writeValue(os, ann.features);
+          omDump.writeValue(os, ann.type);
+          omDump.writeValue(os, ann.start);
+          omDump.writeValue(os, ann.end);
+          omDump.writeValue(os, ann.id);
+          omDump.writeValue(os, ann.features);
         }
       }
     } catch (IOException ex) {
@@ -87,35 +94,48 @@ public class MsgPackFormatSupport implements FormatSupport {
   @Override
   @SuppressWarnings("unchecked")
   public BdocDocument load_bdoc(InputStream is) {
-    ObjectMapper objectMapper = initObjectMapper4Load();
     try {
-      String version = objectMapper.readValue(is, String.class);
-      if (!version.equals("sm1")) { // check if we got our own format
+      System.err.println("DEBUG: Before reading the first value / version");
+      String version = omLoad.readValue(is, String.class);
+      System.err.println("DEBUG: Got the version "+version);
+      if (!version.equals(VERSION)) { // check if we got our own format
         throw new GateRuntimeException("Not the expected MsgPack format sm1 but "+version);
       }
       BdocDocument bdoc = new BdocDocument();
       // we expect to be ready at this point to read everything after the version string
-      bdoc.offset_type = objectMapper.readValue(is, String.class);
-      bdoc.text = objectMapper.readValue(is, String.class);
-      bdoc.features = objectMapper.readValue(is, Map.class);
-      int nannsets = objectMapper.readValue(is, Integer.class);
+      bdoc.offset_type = omLoad.readValue(is, String.class);
+      System.err.println("DEBUG: Got the offset type "+bdoc.offset_type);
+      bdoc.text = omLoad.readValue(is, String.class);
+      System.err.println("DEBUG: Got the text "+bdoc.text);
+      bdoc.features = omLoad.readValue(is, Map.class);
+      System.err.println("DEBUG: Got the features "+bdoc.features);
+      int nannsets = omLoad.readValue(is, Integer.class);
+      System.err.println("DEBUG: got number of annsets"+nannsets);
       Map<String, BdocAnnotationSet> annsets = new HashMap<>();
       for(int i = 0; i<nannsets; i++) {
-        String name = objectMapper.readValue(is, String.class);
+        String name = omLoad.readValue(is, String.class);
         if(name == null) {
           name = "";
         }
+        System.err.println("DEBUG: got set name"+name);
         BdocAnnotationSet as = new BdocAnnotationSet();
-        as.next_annid = objectMapper.readValue(is, Integer.class);
-        int nanns = objectMapper.readValue(is, Integer.class);
+        as.next_annid = omLoad.readValue(is, Integer.class);
+        System.err.println("DEBUG: got next annid"+as.next_annid);
+        int nanns = omLoad.readValue(is, Integer.class);
+        System.err.println("DEBUG: got number of anns"+nanns);
         List<BdocAnnotation> anns = new ArrayList<>(nanns);
         for(int j=0; j<nanns; j++) {
           BdocAnnotation ann = new BdocAnnotation();
-          ann.type = objectMapper.readValue(is, String.class);
-          ann.start = objectMapper.readValue(is, Integer.class);
-          ann.end = objectMapper.readValue(is, Integer.class);
-          ann.id = objectMapper.readValue(is, Integer.class);
-          ann.features = objectMapper.readValue(is, Map.class);
+          ann.type = omLoad.readValue(is, String.class);
+          System.err.println("DEBUG: got ann type"+ann.type);
+          ann.start = omLoad.readValue(is, Integer.class);
+          System.err.println("DEBUG: got ann start"+ann.start);
+          ann.end = omLoad.readValue(is, Integer.class);
+          System.err.println("DEBUG: got ann end"+ann.end);
+          ann.id = omLoad.readValue(is, Integer.class);
+          System.err.println("DEBUG: got ann id"+ann.id);
+          ann.features = omLoad.readValue(is, Map.class);
+          System.err.println("DEBUG: got ann features"+ann.features);
           anns.add(ann);
         }
         as.annotations = anns;   
