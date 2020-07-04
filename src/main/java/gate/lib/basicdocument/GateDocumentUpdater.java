@@ -509,7 +509,6 @@ public class GateDocumentUpdater {
       }
 
     }
-    AnnotationSet anns = gateDocument.getAnnotations();
     return gateDocument;
   }
   
