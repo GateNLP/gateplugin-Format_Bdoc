@@ -21,6 +21,7 @@
 package gate.lib.basicdocument;
 
 import gate.util.GateRuntimeException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -91,5 +92,17 @@ public class ChangeLog {
     log.offset_type = (String)map.get("offset_type");
     return log;
   }
+  
+  public void pprint(PrintStream ps) {
+    ps.println("ChangeLog(");
+    int i = 0;
+    for(Map<String, Object> chg : changes) {
+      ps.print(i);
+      ps.print(chg);
+      ps.println();
+      i++;
+    }
+  }
+  
   
 }

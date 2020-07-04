@@ -70,7 +70,6 @@ public abstract class BaseFormatBdoc
    */
   @Override
   public Resource init() throws ResourceInstantiationException {
-    System.err.println("DEBUG: init with "+mimeType+"/"+mimeSubtype+" and ext="+suffix);
     MimeType mime = new MimeType(mimeType, mimeSubtype);
     mimeString2ClassHandlerMap.put(mime.getType() + "/" + mime.getSubtype(), this);
     mimeString2mimeTypeMap.put(mime.getType() + "/" + mime.getSubtype(), mime);

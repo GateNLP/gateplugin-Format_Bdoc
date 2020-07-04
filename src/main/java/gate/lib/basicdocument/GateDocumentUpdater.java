@@ -414,16 +414,16 @@ public class GateDocumentUpdater {
    */
   public Document fromChangeLog(ChangeLog chlog) {
     for (Map<String, Object> chg : chlog.changes) {
-      // features:clear
-      // feature:set, feature, value
-      // feature:remove, feature
-
-      // features:clear, set, id
-      // feature:set, set, id, feature, value
-      // feature:remove, set, id, feature
+      // doc-features:clear setname, id
+      // doc-feature:set, feature, value
+      // doc-feature:remove, feature
+      // ann-features:clear set, id
+      // ann-feature:set, annid, feature, value
+      // ann-feature:remove, annid, feature
       // annotation:add, set, start, end, type, features, id
       // annotation:remove, set, id
-      // annotation:clear, set
+      // annotations:clear, setname
+      // annotations:add, setname
       String cmd = (String) chg.get("command");
       String setname = (String) chg.get("set");
       AnnotationSet annset = null;
@@ -437,48 +437,44 @@ public class GateDocumentUpdater {
       String feature = (String) chg.get("feature");
       Object value = chg.get("value");
       switch (cmd) {
-        case "features:clear":
-          if (setname == null) {
-            gateDocument.getFeatures().clear();
+        case "doc-features:clear":
+          gateDocument.getFeatures().clear();
+          break;
+        case "ann-features:clear":
+          if (setname.equals("")) {
+            gateDocument.getAnnotations().clear();
           } else {
-            if (setname.equals("")) {
-              gateDocument.getAnnotations().clear();
+            gateDocument.getAnnotations(setname).clear();
+          }
+          break;
+        case "doc-feature:set":
+          gateDocument.getFeatures().put(feature, value);
+          break;
+        case "ann-feature:set":
+          if (annset != null) {
+            Annotation ann = annset.get(id);
+            if (ann == null) {
+              // IMPORTANT: this is silently ignored because the changelog can
+              // sometimes contain feature changes for annotations which are
+              // not in the set any longer. This happens if an annotation gets
+              // removed from the set, but still exists as an annotation
+              // and somebody sets a feature on that annotation. 
+              // throw new RuntimeException("Annotation does not exist with id " + id);
             } else {
-              gateDocument.getAnnotations(setname).clear();
-            }
-          }
-          break;
-        case "feature:set":
-          if (setname == null) {
-            gateDocument.getFeatures().put(feature, value);
-          } else {
-            if (annset != null) {
-              Annotation ann = annset.get(id);
-              if (ann == null) {
-                // IMPORTANT: this is silently ignored because the changelog can
-                // sometimes contain feature changes for annotations which are
-                // not in the set any longer. This happens if an annotation gets
-                // removed from the set, but still exists as an annotation
-                // and somebody sets a feature on that annotation. 
-                // throw new RuntimeException("Annotation does not exist with id " + id);
-
-              } else {
                 ann.getFeatures().put(feature, value);
-              }
             }
-          }
+          } // TODO: how could it happen that there is no annset?
           break;
-        case "feature:remove":
-          if (setname == null) {
-            gateDocument.getFeatures().remove(feature);
-          } else {
-            if (annset != null) {
-              Annotation ann = annset.get(id);
-              if (ann == null) {
-                throw new RuntimeException("Annotation does not exist with id " + id);
-              } else {
-                ann.getFeatures().remove(feature);
-              }
+        case "doc-feature:remove":
+          gateDocument.getFeatures().remove(feature);
+          break;
+        case "ann-feature:remove":
+          if (annset != null) {
+            Annotation ann = annset.get(id);
+            if (ann == null) {
+              throw new RuntimeException("Annotation does not exist with id " + id);
+            } else {
+              ann.getFeatures().remove(feature);
             }
           }
           break;
@@ -513,6 +509,7 @@ public class GateDocumentUpdater {
       }
 
     }
+    AnnotationSet anns = gateDocument.getAnnotations();
     return gateDocument;
   }
   
