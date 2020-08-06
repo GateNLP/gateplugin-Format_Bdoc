@@ -29,4 +29,5 @@ package gate.lib.basicdocument.docformats;
 public enum Format {
   JSON_MAP,
   MSGPACK,
+  YAML,
 }

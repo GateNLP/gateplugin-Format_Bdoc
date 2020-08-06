@@ -441,10 +441,13 @@ public class GateDocumentUpdater {
           gateDocument.getFeatures().clear();
           break;
         case "ann-features:clear":
-          if (setname.equals("")) {
-            gateDocument.getAnnotations().clear();
-          } else {
-            gateDocument.getAnnotations(setname).clear();
+          if (annset != null) {
+            Annotation ann = annset.get(id);
+            if (ann == null) {
+              // silently ignore, that annotation could have been removed 
+            } else {
+              ann.getFeatures().clear();
+            }
           }
           break;
         case "doc-feature:set":

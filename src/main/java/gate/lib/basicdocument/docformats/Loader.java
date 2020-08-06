@@ -120,6 +120,8 @@ public class Loader {
       switch (format) {
         case JSON_MAP:
           return new JsonFormatSupportMap().load_bdoc(is);
+        case YAML:
+          return new YamlFormatSupportMap().load_bdoc(is);
         default:
           return new MsgPackFormatSupport().load_bdoc(is);
       }
@@ -156,6 +158,8 @@ public class Loader {
       switch (format) {
         case JSON_MAP:
           return new JsonFormatSupportMap().load_log(is);
+        case YAML:
+          return new YamlFormatSupportMap().load_log(is);
         default:
           return new MsgPackFormatSupport().load_log(is);
       }
