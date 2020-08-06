@@ -4,7 +4,7 @@
       <gate.creole.Plugin-Maven>
         <group>uk.ac.gate.plugins</group>
         <artifact>format-bdoc</artifact>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
       </gate.creole.Plugin-Maven>
     </localList>
     <collectionType>java.util.ArrayList</collectionType>

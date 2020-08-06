@@ -36,6 +36,25 @@ import java.util.Map;
  */
 public class BdocDocument
 {
+  
+  /**
+   * Default constructor. 
+   */
+  public BdocDocument() {
+    
+  }
+  
+  /**
+   * Create BdocDocument from Map representation.
+   * 
+   * @param map  map representation
+   */
+  public BdocDocument(Map<String, Object> map) {
+    features = (Map<String, Object>) map.get("features");
+    text = (String)map.get("text");
+    annotation_sets = (Map<String, BdocAnnotationSet>) map.get("annotation_sets");
+    offset_type = (String) map.get("offset_type");
+  }
 
   /**
    * Document features. 
@@ -126,6 +145,5 @@ public class BdocDocument
     map.put("text", this.text);
     return map;
   }
- 
-  
+   
 }

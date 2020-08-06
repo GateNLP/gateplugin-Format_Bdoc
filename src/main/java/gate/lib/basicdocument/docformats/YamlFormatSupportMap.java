@@ -22,12 +22,16 @@
 package gate.lib.basicdocument.docformats;
 
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.representer.Representer;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.ChangeLog;
 import gate.util.GateRuntimeException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.nodes.Tag;
 
 /**
  * How to serialize/deserialize JSON Map format.
@@ -40,13 +44,19 @@ import java.io.OutputStream;
  */
 public class YamlFormatSupportMap implements FormatSupport {
 
-  private final Yaml yml = new Yaml();
+  
+  private final Yaml yml;
+  
+  public YamlFormatSupportMap() {
+    yml = new Yaml();
+  }
   
   
   @Override
   public void save(BdocDocument bdoc, OutputStream os) {
     try {
-      String rep = yml.dump(bdoc);
+      // Save without the class tag, so it looks like a map
+      String rep = yml.dumpAsMap(bdoc);
       os.write(rep.getBytes("UTF-8"));
     } catch (IOException ex) {
       ex.printStackTrace(System.err);
@@ -55,9 +65,11 @@ public class YamlFormatSupportMap implements FormatSupport {
   }
 
   @Override
-  public BdocDocument load_bdoc(InputStream is) {
-    BdocDocument bdoc;
-    bdoc = yml.load(is);
+  public BdocDocument load_bdoc(InputStream is) {    
+    // load as map ... 
+    Map<String,Object> map = yml.load(is);
+    // and create the bdoc from the map
+    BdocDocument bdoc = new BdocDocument(map);
     return bdoc;
   }
 
