@@ -32,26 +32,26 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Export document in Bdoc Yaml Format.
+ * Export document in Bdoc Simple Json Format.
  * 
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "Bdoc/YAML Exporter", 
+        name = "Bdoc/YAML Gzip Exporter", 
         tool = true, 
         autoinstances = @AutoInstance, 
-        comment = "Export GATE documents in Bdoc/YAML format.", 
+        comment = "Export GATE documents in Bdoc/YAML Gzip format.", 
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class ExporterBdocYaml extends DocumentExporter {
+public class ExporterBdocYamlGzip extends DocumentExporter {
 
-  private static final long serialVersionUID = 776944837160368L;
+  private static final long serialVersionUID = 79443354560368L;
 
   /**
    * Constructor.
    */
-  public ExporterBdocYaml() {    
-    super("BdocYaml", "bdocym", "text/yaml");
+  public ExporterBdocYamlGzip() {    
+    super("BdocYaml/Gzip", "bdocym.gz", "text/bdocym+gzip");
   }
 
   /**
@@ -66,7 +66,7 @@ public class ExporterBdocYaml extends DocumentExporter {
     BdocDocumentBuilder builder = new BdocDocumentBuilder();
     builder.fromGate(dcmnt);
     BdocDocument bdoc = builder.buildBdoc();
-    new Saver().to(out).format(Format.YAML_MAP).save(bdoc);
+    new Saver().to(out).format(Format.YAML_MAP).gzipped(true).save(bdoc);
   }
   
   

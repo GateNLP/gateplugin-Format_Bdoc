@@ -34,28 +34,27 @@ import java.net.URL;
 import org.apache.log4j.Logger;
 
 /**
- * Read a document in "bdoc yaml" format.
- * 
+ * Read a document in compressed "bdoc yaml" format.
  * 
  * @author Johann Petrak
  */
 @CreoleResource(
-        name = "GATE BdocYaml Format", 
+        name = "GATE BdocYaml Gzipped Format", 
         isPrivate = true,
         autoinstances = {@AutoInstance(hidden = true)},
-        comment = "Format BdocYaml",
+        comment = "Format BdocYamlGzip",
         helpURL = "https://github.com/GateNLP/gateplugin-Format_Bdoc"
 )
-public class FormatBdocYaml 
+public class FormatBdocYamlGzip 
         extends BaseFormatBdoc
 {
-  public FormatBdocYaml() {
+  public FormatBdocYamlGzip() {
     mimeType = "text";
-    mimeSubtype = "bdocym";
-    suffix = "bdocym";
+    mimeSubtype = "bdocym+gzip";
+    suffix = "bdocym.gz";
   }
    
-  private static final long serialVersionUID = 54678535L;
+  private static final long serialVersionUID = 28233433543535L;
   
   /**
    * Logger.
@@ -76,7 +75,7 @@ public class FormatBdocYaml
     }
     BdocDocument bdoc;
     try (InputStream is = sourceUrl.openStream()) {
-      bdoc = new Loader().from(is).format(Format.YAML_MAP).load_bdoc();
+      bdoc = new Loader().from(is).format(Format.YAML_MAP).gzipped(true).load_bdoc();
     } catch (IOException ex) {
       throw new GateRuntimeException("Could not read Bdoc from URL "+sourceUrl, ex);
     } 

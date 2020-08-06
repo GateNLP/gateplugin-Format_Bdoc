@@ -27,7 +27,7 @@ package gate.lib.basicdocument.docformats;
  * @author Johann Petrak
  */
 public enum Format {
-  JSON_MAP,
+  JSON_MAP, // JSON, as map
   MSGPACK,
-  YAML,
+  YAML_MAP, // YAML, as map
 }

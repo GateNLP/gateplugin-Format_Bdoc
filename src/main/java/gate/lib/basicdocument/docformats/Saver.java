@@ -112,7 +112,7 @@ public class Saver {
         case JSON_MAP:
           new JsonFormatSupportMap().save(bdoc, os);
           break;
-        case YAML:
+        case YAML_MAP:
           new YamlFormatSupportMap().save(bdoc, os);
           break;
         default:
