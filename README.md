@@ -1,11 +1,21 @@
 # gateplugin-Format_Bdoc
 
-This plugin adds support for loading and saving GATE documents represented as "Bdoc" (BasicDocument)
-serialized as JSON or GZIP compressed JSON. This representation and serialization can be exchanged
-with the Python `gatenlp` package which is also able to read and write documents that way.
+This plugin adds support for loading and saving GATE documents represented as "Bdoc" (BasicDocument) instances. 
+This representation tries to be as simple as possible while still representing everything that can be 
+represented in a GATE `SimpleDocument` instance. The representation is also almost identical to how 
+`Document` instances are represented in the Python `gatenlp` package and thus ideal for exchanging GATE 
+documents between Java GATE and Python `gatenlp`. 
 
+This plugin allows to save and load GATE Documents represented as BasicDocument instances in the following formats:
+* JSON
+* JSON, GZip compressed
+* MessagePack (see https://msgpack.org/index.html)
+* YAML (see https://yaml.org/)
+* YAML, GZip compressed
 
-Maven Coordinates:
+In addition it can load and process `gatenlp` ChangeLog instances (data that represents changes to be made to a GATE document).
+
+Maven Coordinates for the plugin:
 * groupId: uk.ac.gate.plugins
 * artifactId: format-bdoc
 
@@ -13,7 +23,7 @@ Maven Coordinates:
 
 * Version 1.0-SNAPSHOT is compatible with GATE 8.6.1 and later
   * this version is in branch `v1.0-pre9.0`
-* Version 1.1-SNAPSHOT requires GATE 9.0-SNAPSHOT or later
+* Version 1.1-SNAPSHOT and later require GATE 9.0-SNAPSHOT or later
 
 ## Bdoc representation
 
@@ -35,5 +45,4 @@ In addition the following helper classes:
   a BdocDocument or ChangeLog
 * BdocDocumentBuilder: create a BdocDocument from all or parts of a 
   GATE document
-* docformats.SimpleJson: convert BdocDocument instances to and from JSON
 
