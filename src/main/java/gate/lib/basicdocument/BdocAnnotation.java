@@ -72,6 +72,27 @@ public class BdocAnnotation {
    * End offset.
    */
   public int end;
+
+  /**
+   * Default constructor.
+   */
+  public BdocAnnotation() {
+    
+  }
+  
+  /**
+   * Construct from map representation. 
+   * 
+   * @param annmap  the map as used in serialization.
+   */
+  @SuppressWarnings("unchecked")
+  public BdocAnnotation(Map<String, Object> annmap) {
+    features = (Map<String, Object>) annmap.get("features");
+    type = (String) annmap.get("type");
+    id = (int)annmap.get("id");
+    start = (int)annmap.get("start");
+    end = (int)annmap.get("end");
+  }
   
   
 }

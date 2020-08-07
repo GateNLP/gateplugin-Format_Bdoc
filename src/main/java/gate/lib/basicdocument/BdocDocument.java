@@ -53,7 +53,12 @@ public class BdocDocument
   public BdocDocument(Map<String, Object> map) {
     features = (Map<String, Object>) map.get("features");
     text = (String)map.get("text");
-    annotation_sets = (Map<String, BdocAnnotationSet>) map.get("annotation_sets");
+    name = (String)map.get("name");
+    annotation_sets = new HashMap<>();
+    Map<String, Map<String, Object>> annsetsmap = (Map<String, Map<String, Object>>) map.get("annotation_sets");
+    for(String sname : annsetsmap.keySet()) {
+      annotation_sets.put("sname", new BdocAnnotationSet(annsetsmap.get(sname)));
+    }
     offset_type = (String) map.get("offset_type");
     name = (String) map.get("name");
   }

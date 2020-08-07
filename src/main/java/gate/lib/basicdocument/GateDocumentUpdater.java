@@ -418,6 +418,9 @@ public class GateDocumentUpdater {
         });
       }
     }
+    if(updateName) {
+      gateDocument.setName(bdoc.name);
+    }
     return gateDocument;
   }
 
@@ -470,6 +473,13 @@ public class GateDocumentUpdater {
         case "doc-feature:set":
           gateDocument.getFeatures().put(feature, value);
           break;
+        case "name:set":
+          if(updateName) {
+            String name = (String)chg.get("name");
+            if(name != null && !name.isBlank()) {
+              gateDocument.setName(setname);
+            }
+          }
         case "ann-feature:set":
           if (annset != null) {
             Annotation ann = annset.get(id);

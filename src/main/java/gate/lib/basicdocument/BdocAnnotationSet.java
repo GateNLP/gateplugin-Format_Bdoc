@@ -20,6 +20,7 @@
 
 package gate.lib.basicdocument;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +37,36 @@ public class BdocAnnotationSet {
   // Fields representing the various aspects of an annotation set
   
   /**
+   * Default constructor.
+   */
+  public BdocAnnotationSet() {
+    
+  }
+  
+  /** 
+   * Construct from map. 
+   * 
+   * @param map map as used for serialization.
+   */
+  @SuppressWarnings("unchecked")
+  public BdocAnnotationSet(Map<String, Object> map) {
+    name = (String) map.get("name");
+    next_annid = (int) map.get("next_annid");
+    List<Map<String, Object>> annmaps = (List<Map<String, Object>>) map.get("annotations");
+    annotations = new ArrayList<>();
+    if(annmaps != null) {
+      for(Map<String, Object> annmap : annmaps) {
+        annotations.add(new BdocAnnotation(annmap));
+      }
+    }
+  }
+  
+  
+  /**
    * The annotation set name: the empty string corresponds to the "default
    * annotation set".
    */
-  public String name; 
+  public String name = ""; 
   
   /**
    * The list of annotations in this set.
