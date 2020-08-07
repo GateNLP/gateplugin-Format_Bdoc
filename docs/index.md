@@ -4,7 +4,9 @@ This plugin adds support for loading and saving GATE documents represented as "B
 This representation tries to be as simple as possible while still representing everything that can be 
 represented in a GATE `SimpleDocument` instance. The representation is also almost identical to how 
 `Document` instances are represented in the Python `gatenlp` package and thus ideal for exchanging GATE 
-documents between Java GATE and Python `gatenlp`. 
+documents between Java GATE and Python `gatenlp`. The representation is also aware of the differences between
+Python and Java of how Unicode strings are represented and allows to convert annotation offsets between 
+the two. 
 
 This plugin allows to save and load GATE Documents represented as BasicDocument instances in the following formats:
 * JSON
@@ -22,5 +24,41 @@ Maven Coordinates for the plugin:
 The plugin requires GATE version 9.0-SNAPSHOT or later.
 
 ## Formats
+
+The following formats are supported for loading and saving (all formats are supported in [Python `gatenlp`](https://gatenlp.github.io/python-gatenlp/)):
+
+### JSON
+
+* File extension: `.bdocjs`
+* Mime type: `text/bdocjs` 
+* Document is represented as a JSON map
+* Used in the Python plugin
+* Shared objects (e.g. two different features referencing the same list) cannot be represented and will be converted into separate equal objects
+
+### JSON, Gzip compressed
+
+* File extension:  `.bdocjs.gz` 
+* Mime type: `text/bdocjs+gzip` 
+* Document is represented as a JSON map, then gzip compressed
+
+### YAML
+
+* File extension: `.bdocym`
+* Mime type: `text/bdocym`
+* Document is represented as YAML map without a class tag (see https://yaml.org/)
+* Shared objects are properly saved and restored
+
+### YAML, Gzip compressed
+
+* File extension: `.bdocym.gz`
+* Mime type: `text/bdocym+gzip`
+* Same as YAML, but gzip compressed
+
+### MessagePack
+
+* File extension: `.bdocmp`
+* Mime type: `text/bdocmp`
+* Document is represented in the binary MessagePack format (https://msgpack.org/index.html). This results in very small files. 
+* As with JSON, shared objects are not preserved and converted into separate equal objects. 
 
 
