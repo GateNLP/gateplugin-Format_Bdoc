@@ -11,8 +11,8 @@ the two.
 This plugin allows to save and load GATE Documents represented as BasicDocument instances in the following formats:
 * JSON
 * JSON, GZip compressed
-* MessagePack (see https://msgpack.org/index.html)
-* YAML (see https://yaml.org/)
+* MessagePack (see [https://msgpack.org/index.html](https://msgpack.org/index.html))
+* YAML (see [https://yaml.org/](https://yaml.org/))
 * YAML, GZip compressed
 
 In addition it can load and process `gatenlp` ChangeLog instances (data that represents changes to be made to a GATE document).
@@ -45,7 +45,7 @@ The following formats are supported for loading and saving (all formats are supp
 
 * File extension: `.bdocym`
 * Mime type: `text/bdocym`
-* Document is represented as YAML map without a class tag (see https://yaml.org/)
+* Document is represented as YAML map without a class tag (see [https://yaml.org/](https://yaml.org/))
 * Shared objects are properly saved and restored
 
 ### YAML, Gzip compressed
@@ -58,7 +58,7 @@ The following formats are supported for loading and saving (all formats are supp
 
 * File extension: `.bdocmp`
 * Mime type: `text/bdocmp`
-* Document is represented in the binary MessagePack format (https://msgpack.org/index.html). This results in very small files. 
+* Document is represented in the binary MessagePack format ([https://msgpack.org/index.html](https://msgpack.org/index.html)). This results in very small files. 
 * As with JSON, shared objects are not preserved and converted into separate equal objects. 
 
 
