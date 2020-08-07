@@ -477,7 +477,7 @@ public class GateDocumentUpdater {
           if(updateName) {
             String name = (String)chg.get("name");
             if(name != null && !name.trim().isEmpty()) {
-              gateDocument.setName(setname);
+              gateDocument.setName(name);
             }
           }
           break;
