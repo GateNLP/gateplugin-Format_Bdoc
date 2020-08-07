@@ -89,7 +89,7 @@ public class BdocAnnotation {
   public BdocAnnotation(Map<String, Object> annmap) {
     features = (Map<String, Object>) annmap.get("features");
     type = (String) annmap.get("type");
-    id = (int)annmap.get("id");
+    id = (Integer)annmap.get("id");
     start = (int)annmap.get("start");
     end = (int)annmap.get("end");
   }

@@ -51,7 +51,7 @@ public class BdocAnnotationSet {
   @SuppressWarnings("unchecked")
   public BdocAnnotationSet(Map<String, Object> map) {
     name = (String) map.get("name");
-    next_annid = (int) map.get("next_annid");
+    next_annid = (Integer) map.get("next_annid");
     List<Map<String, Object>> annmaps = (List<Map<String, Object>>) map.get("annotations");
     annotations = new ArrayList<>();
     if(annmaps != null) {

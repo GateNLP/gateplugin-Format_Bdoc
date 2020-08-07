@@ -480,6 +480,7 @@ public class GateDocumentUpdater {
               gateDocument.setName(setname);
             }
           }
+          break;
         case "ann-feature:set":
           if (annset != null) {
             Annotation ann = annset.get(id);
