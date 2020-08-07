@@ -43,7 +43,7 @@ import org.msgpack.jackson.dataformat.MessagePackFactory;
  */
 public class MsgPackFormatSupport implements FormatSupport {
 
-  public static final String VERSION = "sm1"; // Simple MsgPack 1
+  public static final String VERSION = "sm2"; // Simple MsgPack 2
   
   private ObjectMapper initObjectMapper4Dump() {
     ObjectMapper om = new ObjectMapper(new MessagePackFactory());
@@ -71,6 +71,7 @@ public class MsgPackFormatSupport implements FormatSupport {
       
       omDump.writeValue(os, bdoc.offset_type);
       omDump.writeValue(os, bdoc.text);
+      omDump.writeValue(os, bdoc.name);
       omDump.writeValue(os, bdoc.features);
       omDump.writeValue(os, bdoc.annotation_sets.size());
       for(Map.Entry<String,BdocAnnotationSet> e : bdoc.annotation_sets.entrySet()) {
@@ -99,7 +100,7 @@ public class MsgPackFormatSupport implements FormatSupport {
       String version = omLoad.readValue(is, String.class);
       System.err.println("DEBUG: Got the version "+version);
       if (!version.equals(VERSION)) { // check if we got our own format
-        throw new GateRuntimeException("Not the expected MsgPack format sm1 but "+version);
+        throw new GateRuntimeException("Not the expected MsgPack format sm2 but "+version);
       }
       BdocDocument bdoc = new BdocDocument();
       // we expect to be ready at this point to read everything after the version string
@@ -107,6 +108,8 @@ public class MsgPackFormatSupport implements FormatSupport {
       System.err.println("DEBUG: Got the offset type "+bdoc.offset_type);
       bdoc.text = omLoad.readValue(is, String.class);
       System.err.println("DEBUG: Got the text "+bdoc.text);
+      bdoc.name = omLoad.readValue(is, String.class);
+      System.err.println("DEBUG: Got the name "+bdoc.name);
       bdoc.features = omLoad.readValue(is, Map.class);
       System.err.println("DEBUG: Got the features "+bdoc.features);
       int nannsets = omLoad.readValue(is, Integer.class);

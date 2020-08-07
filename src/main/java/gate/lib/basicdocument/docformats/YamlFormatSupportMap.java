@@ -22,7 +22,6 @@
 package gate.lib.basicdocument.docformats;
 
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.representer.Representer;
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.ChangeLog;
 import gate.util.GateRuntimeException;
@@ -30,8 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.nodes.Tag;
 
 /**
  * How to serialize/deserialize JSON Map format.

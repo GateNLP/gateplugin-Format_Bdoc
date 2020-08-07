@@ -53,6 +53,7 @@ public class BdocDocumentBuilder {
   HashMap<String, Object> includedFeatures = new HashMap<>();
   String offset_type = "j";
   List<JSON.Feature> addJSONFeatures = new ArrayList<>();
+  String name = "";
 
   /**
    * Tell the builder to create the JsonDocument from a GATE document.
@@ -67,6 +68,7 @@ public class BdocDocumentBuilder {
   public BdocDocumentBuilder fromGate(Document doc) {
     // TODO: for now check that Document is a SimpleDocument
     this.text = doc.getContent().toString(); 
+    this.name = doc.getName();
     includedSets.put("", doc.getAnnotations());
     for (String name : doc.getNamedAnnotationSets().keySet()) {      
       includedSets.put(name, doc.getAnnotations(name));
@@ -134,6 +136,16 @@ public class BdocDocumentBuilder {
     return this;
   }
   
+  /**
+   * Set/update the name of the bdoc document. 
+   * 
+   * @param name the new document name
+   * @return modified BdocDocumentBuilder
+   */
+  public BdocDocumentBuilder setName(String name) {
+    this.name = name;
+    return this;
+  }
   
   /**
    * Set the list of included AnnotationSet names.
@@ -239,6 +251,7 @@ public class BdocDocumentBuilder {
   public BdocDocument buildBdoc() {
     BdocDocument ret = new BdocDocument();
     ret.text = text;
+    ret.name = name;
     if(includedFeatures.size() > 0) {
       ret.features = includedFeatures;
     }

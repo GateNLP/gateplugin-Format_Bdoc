@@ -105,6 +105,11 @@ public class GateDocumentUpdater {
   private Set<String> featurenames;
   
   /**
+   * If true update the GATE document name from the bdoc document name.
+   */
+  private boolean updateName = true;
+  
+  /**
    * OffsetMapper for converting offsets to Java.
    * If we update from a BdocDocument of ChangeLog which does not have Java
    * offsets, we first create the offset mapper and store it here before any
@@ -158,6 +163,18 @@ public class GateDocumentUpdater {
     return this;
   }
 
+  /**
+   * Set if the document name should get updated (default is yes). 
+   * 
+   * @param flag if false, prevents the update
+   * @return modified GateDocumentUpdater
+   */
+  public GateDocumentUpdater updateName(boolean flag) {
+    updateName = flag;
+    return this;
+  }
+  
+  
   /**
    * Include this annotation set in the updates.
    *

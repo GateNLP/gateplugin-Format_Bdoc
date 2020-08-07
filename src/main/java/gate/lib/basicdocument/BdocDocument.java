@@ -49,11 +49,13 @@ public class BdocDocument
    * 
    * @param map  map representation
    */
+  @SuppressWarnings("unchecked")
   public BdocDocument(Map<String, Object> map) {
     features = (Map<String, Object>) map.get("features");
     text = (String)map.get("text");
     annotation_sets = (Map<String, BdocAnnotationSet>) map.get("annotation_sets");
     offset_type = (String) map.get("offset_type");
+    name = (String) map.get("name");
   }
 
   /**
@@ -72,6 +74,11 @@ public class BdocDocument
    * 
    */
   public String text;
+  
+  /**
+   * Document name.
+   */
+  public String name;
   
   /**
    * Map from annotation set name to annotation set with that name. 
@@ -143,6 +150,7 @@ public class BdocDocument
     map.put("features", this.features);
     map.put("offset_type", this.offset_type);
     map.put("text", this.text);
+    map.put("name", this.name);
     return map;
   }
    
