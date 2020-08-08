@@ -20,7 +20,6 @@
 
 package gate.lib.basicdocument;
 
-import com.fasterxml.jackson.jr.ob.JSON;
 import gate.Annotation;
 import gate.Document;
 import gate.lib.basicdocument.docformats.Format;
@@ -52,7 +51,6 @@ public class BdocDocumentBuilder {
   HashMap<String,Integer> nextAnnotationIds = new HashMap<>();
   HashMap<String, Object> includedFeatures = new HashMap<>();
   String offset_type = "j";
-  List<JSON.Feature> addJSONFeatures = new ArrayList<>();
   String name = "";
 
   /**
@@ -227,16 +225,6 @@ public class BdocDocumentBuilder {
    */
   public BdocDocumentBuilder pythonOffsets() {
     offset_type = "p";
-    return this;
-  }
-  
-  /**
-   * Set a JSON serialisation feature.
-   * @param feature the feature to set
-   * @return the modified builder instance
-   */
-  public BdocDocumentBuilder withJSONFeature(JSON.Feature feature) {
-    addJSONFeatures.add(feature);
     return this;
   }
   

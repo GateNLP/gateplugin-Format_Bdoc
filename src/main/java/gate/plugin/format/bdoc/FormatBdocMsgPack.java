@@ -73,7 +73,6 @@ public class FormatBdocMsgPack
    */
   @Override
   public void unpackMarkup(Document dcmnt) throws DocumentFormatException {
-    System.err.println("Unpacking using "+this.getClass());    
     URL sourceUrl = dcmnt.getSourceUrl();
     if(sourceUrl == null) {
       throw new GateRuntimeException("Source URL is null");

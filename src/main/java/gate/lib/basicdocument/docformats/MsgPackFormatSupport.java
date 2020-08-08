@@ -96,49 +96,34 @@ public class MsgPackFormatSupport implements FormatSupport {
   @SuppressWarnings("unchecked")
   public BdocDocument load_bdoc(InputStream is) {
     try {
-      System.err.println("DEBUG: Before reading the first value / version");
       String version = omLoad.readValue(is, String.class);
-      System.err.println("DEBUG: Got the version "+version);
       if (!version.equals(VERSION)) { // check if we got our own format
         throw new GateRuntimeException("Not the expected MsgPack format sm2 but "+version);
       }
       BdocDocument bdoc = new BdocDocument();
       // we expect to be ready at this point to read everything after the version string
       bdoc.offset_type = omLoad.readValue(is, String.class);
-      System.err.println("DEBUG: Got the offset type "+bdoc.offset_type);
       bdoc.text = omLoad.readValue(is, String.class);
-      System.err.println("DEBUG: Got the text "+bdoc.text);
       bdoc.name = omLoad.readValue(is, String.class);
-      System.err.println("DEBUG: Got the name "+bdoc.name);
       bdoc.features = omLoad.readValue(is, Map.class);
-      System.err.println("DEBUG: Got the features "+bdoc.features);
       int nannsets = omLoad.readValue(is, Integer.class);
-      System.err.println("DEBUG: got number of annsets"+nannsets);
       Map<String, BdocAnnotationSet> annsets = new HashMap<>();
       for(int i = 0; i<nannsets; i++) {
         String name = omLoad.readValue(is, String.class);
         if(name == null) {
           name = "";
         }
-        System.err.println("DEBUG: got set name"+name);
         BdocAnnotationSet as = new BdocAnnotationSet();
         as.next_annid = omLoad.readValue(is, Integer.class);
-        System.err.println("DEBUG: got next annid"+as.next_annid);
         int nanns = omLoad.readValue(is, Integer.class);
-        System.err.println("DEBUG: got number of anns"+nanns);
         List<BdocAnnotation> anns = new ArrayList<>(nanns);
         for(int j=0; j<nanns; j++) {
           BdocAnnotation ann = new BdocAnnotation();
           ann.type = omLoad.readValue(is, String.class);
-          System.err.println("DEBUG: got ann type"+ann.type);
           ann.start = omLoad.readValue(is, Integer.class);
-          System.err.println("DEBUG: got ann start"+ann.start);
           ann.end = omLoad.readValue(is, Integer.class);
-          System.err.println("DEBUG: got ann end"+ann.end);
           ann.id = omLoad.readValue(is, Integer.class);
-          System.err.println("DEBUG: got ann id"+ann.id);
           ann.features = omLoad.readValue(is, Map.class);
-          System.err.println("DEBUG: got ann features"+ann.features);
           anns.add(ann);
         }
         as.annotations = anns;   

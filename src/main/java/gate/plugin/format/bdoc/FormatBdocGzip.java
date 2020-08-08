@@ -74,7 +74,6 @@ public class FormatBdocGzip
    */
   @Override
   public void unpackMarkup(Document dcmnt) throws DocumentFormatException {
-    logger.info("Unpacking using "+this.getClass());    
     URL sourceUrl = dcmnt.getSourceUrl();
     if(sourceUrl == null) {
       throw new GateRuntimeException("Source URL is null");
