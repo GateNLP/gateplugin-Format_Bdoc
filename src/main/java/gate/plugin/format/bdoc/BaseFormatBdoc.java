@@ -20,7 +20,6 @@
 
 package gate.plugin.format.bdoc;
 
-import gate.DirectLoadingDocumentFormat;
 import gate.Document;
 import gate.DocumentContent;
 import gate.DocumentFormat;
@@ -42,7 +41,9 @@ import gate.util.DocumentFormatException;
  */
 public abstract class BaseFormatBdoc
         extends DocumentFormat
-        implements DirectLoadingDocumentFormat {
+// TODO: once we want to make it depend on GATE version 9.0 or later!        
+//        implements DirectLoadingDocumentFormat 
+{
 
   private static final long serialVersionUID = 776942555558L;
   /**
