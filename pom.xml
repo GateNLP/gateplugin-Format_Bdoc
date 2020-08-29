@@ -120,9 +120,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.0</version>
+        <!-- was 2.22.0 -->
+        <version>3.0.0-M5</version>
         <configuration>
           <skip>true</skip>
+          <!-- non recommended approach works, see https://stackoverflow.com/questions/55632614/maven-surefire-plugin-crahsing-jvm-on-java-11-corrupted-stdout-by-directly-writ -->
+          <forkCount>0</forkCount>
+          <!-- recommended approach does not work -->
+          <!-- <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/> -->
         </configuration>
         <executions>
           <execution>
