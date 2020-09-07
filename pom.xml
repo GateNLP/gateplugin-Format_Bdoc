@@ -125,9 +125,9 @@
         <configuration>
           <skip>true</skip>
           <!-- non recommended approach works, see https://stackoverflow.com/questions/55632614/maven-surefire-plugin-crahsing-jvm-on-java-11-corrupted-stdout-by-directly-writ -->
-          <forkCount>0</forkCount>
+          <!-- <forkCount>0</forkCount> -->
           <!-- recommended approach does not work -->
-          <!-- <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/> -->
+          <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>
         </configuration>
         <executions>
           <execution>
