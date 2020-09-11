@@ -11,3 +11,5 @@ Maven Coordinates for the plugin:
 * artifactId: format-bdoc
 
 
+NOTE: as long as we depend on gate-plugin-parent 8.6.1 we need to use java 8 for testing, 
+there is a problem with the jacoco maven plugin version (see https://github.com/GateNLP/gateplugin-Format_Bdoc/issues/8)
