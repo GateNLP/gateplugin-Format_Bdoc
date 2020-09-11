@@ -33,13 +33,15 @@
   <parent>
     <groupId>uk.ac.gate</groupId>
     <artifactId>gate-plugin-base</artifactId>
-    <version>8.6.1</version> 
+    <version>8.6.1</version>
+    <!-- <version>9.0-SNAPSHOT</version> -->
     <relativePath/>
   </parent>
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <gate-core.version>8.6.1</gate-core.version>
+    <!-- <gate-core.version>8.6.1</gate-core.version> -->
+    <gate-core.version>9.0-SNAPSHOT</gate-core.version>
   </properties>
   <licenses>
     <license>
@@ -124,10 +126,10 @@
         <version>3.0.0-M5</version>
         <configuration>
           <skip>true</skip>
-          <!-- non recommended approach works, see https://stackoverflow.com/questions/55632614/maven-surefire-plugin-crahsing-jvm-on-java-11-corrupted-stdout-by-directly-writ -->
-          <forkCount>0</forkCount>
-          <!-- recommended approach does not work -->
-          <!-- <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/> -->
+	  <!-- see https://stackoverflow.com/questions/55632614/maven-surefire-plugin-crahsing-jvm-on-java-11-corrupted-stdout-by-directly-writ -->
+	  <!-- see https://github.com/GateNLP/gateplugin-Format_Bdoc/issues/8 -->
+	  <!-- <forkCount>0</forkCount> -->
+	  <!-- <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/> -->
         </configuration>
         <executions>
           <execution>
