@@ -37,7 +37,7 @@ Gate.init()
 Gate.getCreoleRegister().registerPlugin(
             new Plugin.Maven("uk.ac.gate.plugins", "format-fastinfoset", "8.5"));
 Gate.getCreoleRegister().registerPlugin(
-            new Plugin.Maven("uk.ac.gate.plugins", "format-bdoc", "1.6-SNAPSHOT"));
+            new Plugin.Maven("uk.ac.gate.plugins", "format-bdoc", "1.7-SNAPSHOT"));
 
 fmt2exp = [:]
 fmt["finf"] = cr.get("gate.corpora.FastInfosetExporter").getInstantiations().iterator().next()
