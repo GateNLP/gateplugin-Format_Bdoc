@@ -8,7 +8,8 @@ documents between Java GATE and Python `gatenlp`. The representation is also awa
 Python and Java of how Unicode strings are represented and allows to convert annotation offsets between 
 the two. 
 
-This plugin allows to save and load GATE Documents represented as BasicDocument instances in the following formats:
+This plugin allows to save and load GATE Documents represented as BasicDocument instances in the following serialization formats (see section Formats below for details):
+
 * JSON
 * JSON, GZip compressed
 * MessagePack (see [https://msgpack.org/index.html](https://msgpack.org/index.html))
@@ -21,23 +22,23 @@ Maven Coordinates for the plugin:
 * groupId: uk.ac.gate.plugins
 * artifactId: format-bdoc
 
-The plugin requires GATE version 9.0-SNAPSHOT or later.
-
 ## Formats
 
-The following formats are supported for loading and saving (all formats are supported in [Python `gatenlp`](https://gatenlp.github.io/python-gatenlp/)):
+The following formats are supported for loading and saving (all formats are supported by the [Python `gatenlp`](https://gatenlp.github.io/python-gatenlp/) package):
 
 ### JSON
 
 * File extension: `.bdocjs`
+  * also recognized but should not be used: `.bdocjson`, `.bdocsjson`
 * Mime type: `text/bdocjs` 
 * Document is represented as a JSON map
-* Used in the Python plugin
-* Shared objects (e.g. two different features referencing the same list) cannot be represented and will be converted into separate equal objects
+* Used in the [Python plugin](http://gatenlp.github.io/gateplugin-Python/)
+* Shared objects (e.g. two different features referencing the same list) cannot be represented and are instead converted into separate equal objects
 
 ### JSON, Gzip compressed
 
 * File extension:  `.bdocjs.gz` 
+  * also recognized but should not be used: `.bdocjson.gz`, `.bdocsjson.gz`
 * Mime type: `text/bdocjs+gzip` 
 * Document is represented as a JSON map, then gzip compressed
 
@@ -59,6 +60,6 @@ The following formats are supported for loading and saving (all formats are supp
 * File extension: `.bdocmp`
 * Mime type: `text/bdocmp`
 * Document is represented in the binary MessagePack format ([https://msgpack.org/index.html](https://msgpack.org/index.html)). This results in very small files. 
-* As with JSON, shared objects are not preserved and converted into separate equal objects. 
+* As with JSON, shared objects are not preserved and instead converted into separate equal objects. 
 
 
