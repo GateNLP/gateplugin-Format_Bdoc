@@ -22,17 +22,19 @@ package gate.lib.basicdocument;
 
 import gate.Annotation;
 import gate.Document;
+import gate.corpora.DocumentImpl;
 import gate.lib.basicdocument.docformats.Format;
 import gate.lib.basicdocument.docformats.Saver;
 import gate.util.GateRuntimeException;
+
 import java.io.File;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Class for building a JsonDocument.
@@ -47,11 +49,14 @@ import java.util.Set;
 public class BdocDocumentBuilder {
   
   String text;
-  HashMap<String,Set<Annotation>> includedSets = new HashMap<>();
+  HashMap<String,Set<Annotation>> knownSets = new HashMap<>();
+  Set<String> includedSetNames =  new HashSet<>();
   HashMap<String,Integer> nextAnnotationIds = new HashMap<>();
   HashMap<String, Object> includedFeatures = new HashMap<>();
+  boolean includePlaceholderSets = false;
   String offset_type = "j";
   String name = "";
+  int nextAnnId = 1;
 
   /**
    * Tell the builder to create the JsonDocument from a GATE document.
@@ -67,9 +72,15 @@ public class BdocDocumentBuilder {
     // TODO: for now check that Document is a SimpleDocument
     this.text = doc.getContent().toString(); 
     this.name = doc.getName();
-    includedSets.put("", doc.getAnnotations());
+    if(! (doc instanceof DocumentImpl)) {
+      throw new GateRuntimeException("Cannot build Bdoc document from something that is not a gate.corpora.DocumentImpl");
+    }
+    nextAnnId = ((DocumentImpl)doc).getNextAnnotationId();
+    knownSets.put("", doc.getAnnotations());
+    includedSetNames.add("");
     for (String name : doc.getNamedAnnotationSets().keySet()) {      
-      includedSets.put(name, doc.getAnnotations(name));
+      knownSets.put(name, doc.getAnnotations(name));
+      includedSetNames.add(name);
     }
     BdocUtils.featureMap2Map(doc.getFeatures(), includedFeatures);
     return this;
@@ -93,7 +104,8 @@ public class BdocDocumentBuilder {
    */
   public BdocDocumentBuilder addSet(String name, Set<Annotation> annset, 
           int nextAnnotationId) {
-    includedSets.put(name, annset);
+    knownSets.put(name, annset);
+    includedSetNames.add(name);
     nextAnnotationIds.put(name, nextAnnotationId);
     return this;
   }
@@ -148,34 +160,41 @@ public class BdocDocumentBuilder {
   /**
    * Set the list of included AnnotationSet names.
    * 
-   * All the names must already be registered to get added, otherwise an 
-   * exception is thrown. 
-   * This allows you to select the annotations to  actually use from 
-   * a GATE document. 
+   * This allows you to select the annotation sets to  actually use from
+   * a GATE document.
+   *
+   * If set names are specified which are not in initial or currently known list of sets,
+   * this is silently ignored. That way the same selection can be used for many documents,
+   * even if some of them do not actually contain some of the sets.
+   *
    * @param names a collection of names to choose and use for the BdocDocument
    * @return modified BdocDocumentBuilder
    */
   public BdocDocumentBuilder setAnnotationSetNames(Collection<String> names) {
-    HashMap<String,Set<Annotation>> newSets = new HashMap<>();
-    for (String tmpname : names) {
-      if(includedSets.containsKey(tmpname)) {
-        newSets.put(tmpname, includedSets.get(tmpname));
-      } else {
-        throw new GateRuntimeException("Cannot select annotation set "+
-                tmpname+" because it does not exist");
-      }
-    }
-    includedSets = newSets;
+    includedSetNames.clear();
+    includedSetNames.addAll(names);
     return this;
   }
-  
+
+  /**
+   * Set if placeholders sets should get included.
+   *
+   * This is only relevant if a subset of all annotation sets is selected to get added.
+   * @param flag
+   * @return
+   */
+  public BdocDocumentBuilder setIncludePlaceholderSets(boolean flag) {
+    includePlaceholderSets = flag;
+    return this;
+  }
   
   /**
    * Set the list of included features.
    * 
-   * All the names must already be registered to get added, otherwise an 
-   * exception is thrown. 
-   * This allows you to select the features to actually use from a GATE document. 
+   * This allows you to select the features to actually use from a GATE document.
+   * If features are selected which are not known, this is silently ignored.
+   *
+   *
    * @param featurenames a collection of  feature names to choose and use for 
    * the BdocDocument
    * @return modified BdocDocumentBuilder
@@ -185,9 +204,6 @@ public class BdocDocumentBuilder {
     for (String tmpname : featurenames) {
       if(includedFeatures.containsKey(tmpname)) {
         newFeatures.put(tmpname, includedFeatures.get(tmpname));
-      } else {
-        throw new GateRuntimeException("Cannot select feature "+
-                tmpname+" because it does not exist");
       }
     }
     includedFeatures = newFeatures;
@@ -243,14 +259,27 @@ public class BdocDocumentBuilder {
     if(includedFeatures.size() > 0) {
       ret.features = includedFeatures;
     }
-    if(includedSets.size() > 0) {
+    if(knownSets.size() > 0) {
       HashMap<String, BdocAnnotationSet> annotation_sets = new HashMap<>();
-      for(String name : includedSets.keySet()) {     
+      for(String name : knownSets.keySet()) {
+        if(!includedSetNames.contains(name)) {
+          // if a set should not get added, we either completely ignore it, or if
+          // includePlaceholderSets is true, we add an empty set with that name which
+          // has the next annotation id set to the one from the gate document
+          if (includePlaceholderSets) {
+            BdocAnnotationSet annset = new BdocAnnotationSet();
+            annset.name = name;
+            annset.annotations = new ArrayList<>();
+            annset.next_annid = nextAnnId;
+            annotation_sets.put(annset.name, annset);
+          }
+          continue;
+        }
         BdocAnnotationSet annset = new BdocAnnotationSet();
         annset.name = name;
         annset.annotations = new ArrayList<>();
         int next_annid = 0;
-        for (Annotation ann : includedSets.get(name)) {
+        for (Annotation ann : knownSets.get(name)) {
           BdocAnnotation bdocann = BdocAnnotation.fromGateAnnotation(ann);
           if(bdocann.id >= next_annid) {
             next_annid = bdocann.id + 1;

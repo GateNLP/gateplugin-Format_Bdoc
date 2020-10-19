@@ -35,10 +35,7 @@ import gate.lib.basicdocument.ChangeLog;
 import gate.lib.basicdocument.GateDocumentUpdater;
 import gate.lib.basicdocument.docformats.Loader;
 import gate.util.GateRuntimeException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.swing.Action;
 
 /**
@@ -74,6 +71,7 @@ public class API extends ResourceHelper {
   @SuppressWarnings("unchecked") 
   public Object call(String action, Resource resource, Object... params) {
     BdocDocument bdoc;
+    BdocDocumentBuilder builder;
     Document gdoc;
     ChangeLog log;
     String json;
@@ -95,8 +93,21 @@ public class API extends ResourceHelper {
         bdoc = new BdocDocumentBuilder().fromGate(gdoc).buildBdoc();
         return bdoc;
       case "bdocmap_from_doc":
+        // if the first params parameter is present then if it is null, all sets are added, otherwise
+        // a collection of names to include is expected. If the second params is present it is expected to
+        // be a boolean indicating if placeholder sets should get added in case not all sets are included.
+        // Placeholder sets are empty sets with the names of those not included, but containing a
+        // next annotation id. If the 2nd parameter is missing, the default is to not include
+        // placeholder sets.
         gdoc = (Document)resource;
-        bdoc = new BdocDocumentBuilder().fromGate(gdoc).buildBdoc();
+        builder = new BdocDocumentBuilder().fromGate(gdoc);
+        if(params.length > 0 && params[0] != null) {
+          boolean includePlaceholderSets = false;
+          if(params.length > 1) includePlaceholderSets = (Boolean)params[1];
+          builder.setAnnotationSetNames((Collection<String>)params[0]);
+          builder.setIncludePlaceholderSets(includePlaceholderSets);
+        }
+        bdoc = builder.buildBdoc();
         return bdoc.toMap();
       case "log_from_string":
         json = (String)params[0];
