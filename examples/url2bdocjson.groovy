@@ -9,7 +9,7 @@
 import gate.*
 import gate.creole.*
 import gate.util.*
-@Grab('uk.ac.gate.plugins:format-bdoc:1.1-SNAPSHOT')
+@Grab('uk.ac.gate.plugins:format-bdoc:1.6-SNAPSHOT')
 import gate.lib.basicdocument.BdocDocument;
 import gate.lib.basicdocument.BdocDocumentBuilder;
 import gate.lib.basicdocument.docformats.SimpleJson;
@@ -37,7 +37,7 @@ try {
 System.err.println("Trying to convert from "+infileUrl+" to "+outfile);
 
 Gate.getCreoleRegister().registerPlugin(
-  new Plugin.Maven("uk.ac.gate.plugins", "format-fastinfoset", "8.5-SNAPSHOT"));
+  new Plugin.Maven("uk.ac.gate.plugins", "format-fastinfoset", "8.6"));
 
 parms = Factory.newFeatureMap();
 parms.put("sourceUrl", infileUrl)

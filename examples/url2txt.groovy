@@ -39,7 +39,7 @@ try {
 System.err.println("Trying to convert from "+infileUrl+" to "+outfile);
 
 Gate.getCreoleRegister().registerPlugin(
-  new Plugin.Maven("uk.ac.gate.plugins", "format-fastinfoset", "8.5-SNAPSHOT"));
+  new Plugin.Maven("uk.ac.gate.plugins", "format-fastinfoset", "8.6"));
 
 parms = Factory.newFeatureMap();
 parms.put("sourceUrl", infileUrl)

@@ -12,7 +12,7 @@
 // See also: http://docs.groovy-lang.org/latest/html/documentation/grape.html#Grape-UsingGrapeFromtheGroovyShell
 // Oddly, putting that one import on the same line makes it work with @Grab in groovysh and this
 // should work with both groovy and groovysh
-@Grab('uk.ac.gate:gate-core:9.0-SNAPSHOT') 
+@Grab('uk.ac.gate:gate-core:8.6.1') 
 import gate.*
 import gate.creole.*
 import java.io.File
@@ -37,7 +37,7 @@ Gate.init()
 Gate.getCreoleRegister().registerPlugin(
             new Plugin.Maven("uk.ac.gate.plugins", "format-fastinfoset", "8.5"));
 Gate.getCreoleRegister().registerPlugin(
-            new Plugin.Maven("uk.ac.gate.plugins", "format-bdoc", "1.3-SNAPSHOT"));
+            new Plugin.Maven("uk.ac.gate.plugins", "format-bdoc", "1.6-SNAPSHOT"));
 
 fmt2exp = [:]
 fmt["finf"] = cr.get("gate.corpora.FastInfosetExporter").getInstantiations().iterator().next()
