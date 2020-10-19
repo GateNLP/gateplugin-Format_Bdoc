@@ -8,7 +8,7 @@ import gate.creole.*;
 import gate.util.persistence.*;
 import static gate.Utils.*;
 
-@Grab('uk.ac.gate.plugins:format-bdoc:1.6-SNAPSHOT')
+@Grab('uk.ac.gate.plugins:format-bdoc:1.6')
 import gate.plugin.format.bdoc.*;
 import gate.lib.basicdocument.*;
 import gate.lib.basicdocument.docformats.*;

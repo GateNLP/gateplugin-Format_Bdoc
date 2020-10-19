@@ -7,7 +7,7 @@
 
 @Grab(value='org.apache.tika:tika-parsers:1.23', transitive=false)
 
-@Grab('uk.ac.gate:gate-core:9.0-SNAPSHOT') 
+@Grab('uk.ac.gate:gate-core:8.6.1') 
 import gate.*
 import gate.creole.*
 import gate.util.*
