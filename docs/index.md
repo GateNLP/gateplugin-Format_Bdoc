@@ -8,6 +8,7 @@ documents between Java GATE and Python `gatenlp`. The representation is also awa
 Python and Java of how Unicode strings are represented and allows to convert annotation offsets between 
 the two. 
 
+
 This plugin allows to save and load GATE Documents represented as BasicDocument instances in the following serialization formats (see section Formats below for details):
 
 * JSON
@@ -17,6 +18,11 @@ This plugin allows to save and load GATE Documents represented as BasicDocument 
 * YAML, GZip compressed
 
 In addition it can load and process `gatenlp` ChangeLog instances (data that represents changes to be made to a GATE document).
+
+Saving and loading work exactly as for the default GATE XML format with the following exceptions:
+
+* Only YAML and YAML, Gzip supports restoring shared data, e.g. two features having the same list object as a value.
+* All formats save and restore the document name instead of generating the document name from the file name. Only if the serialized JSON/msgpack/yaml file does not have a name stored or the name is empty, the file name is used to create the document name as usual. 
 
 Maven Coordinates for the plugin:
 * groupId: uk.ac.gate.plugins
