@@ -86,8 +86,6 @@ public class FormatBdoc
       // TODO: for now, a very simple heuristic: if it starts with "{" must be
       // JSON, otherwise msgpack. should maybe check the msgpack bytes 
       // For JSON should maybe ignore byte order encoding marker 
-      System.err.print("DEBUG: first char is ");
-      System.err.println(buf[0]);
       if(buf[0] == 123) { // ascii for "{"
         fmt = Format.JSON_MAP;
       // TODO: in case we want to support a serialization format that uses
