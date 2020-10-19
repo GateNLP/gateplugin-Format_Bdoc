@@ -418,7 +418,7 @@ public class GateDocumentUpdater {
         });
       }
     }
-    if(updateName) {
+    if(updateName && bdoc.name != null && !bdoc.name.isEmpty() ) {
       gateDocument.setName(bdoc.name);
     }
     return gateDocument;
