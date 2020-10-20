@@ -114,6 +114,7 @@ public class MsgPackFormatSupport implements FormatSupport {
           name = "";
         }
         BdocAnnotationSet as = new BdocAnnotationSet();
+        as.name = name;
         as.next_annid = omLoad.readValue(is, Integer.class);
         int nanns = omLoad.readValue(is, Integer.class);
         List<BdocAnnotation> anns = new ArrayList<>(nanns);

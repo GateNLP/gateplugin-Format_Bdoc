@@ -57,7 +57,7 @@ public class BdocDocument
     annotation_sets = new HashMap<>();
     Map<String, Map<String, Object>> annsetsmap = (Map<String, Map<String, Object>>) map.get("annotation_sets");
     for(String sname : annsetsmap.keySet()) {
-      annotation_sets.put("sname", new BdocAnnotationSet(annsetsmap.get(sname)));
+      annotation_sets.put(sname, new BdocAnnotationSet(annsetsmap.get(sname)));
     }
     offset_type = (String) map.get("offset_type");
     name = (String) map.get("name");

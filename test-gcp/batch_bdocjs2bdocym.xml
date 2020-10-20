@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<batch id="batch-id" xmlns="http://gate.ac.uk/ns/cloud/batch/1.0" >
+  <application file="empty.xgapp"/>
+  <report file="report_bdocjs2bdocym.xml"/>
+  <input dir="indir" 
+	  mimeType="text/bdocjs"
+	  compression="none"
+	  encoding="UTF-8"
+	  class="gate.cloud.io.file.FileInputHandler"
+	  />
+  <output dir="outdir"
+	  mimeType="text/bdocym"
+	  compression="none"
+	  encoding="UTF-8"
+	  fileExtension=".bdocym"
+	  replaceExtension="true"
+	  class="gate.plugin.format.bdoc.gcp.BdocYamlOutputHandler"
+	  />
+  <documents>
+    <documentEnumerator 
+	    class="gate.cloud.io.file.FileDocumentEnumerator"
+	  includes="**/*.bdocjs"
+	  dir="indir"
+	  />
+  </documents>
+</batch>
+
+
