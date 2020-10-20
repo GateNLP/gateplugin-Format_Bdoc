@@ -182,14 +182,14 @@ public class SimpleBenchmark {
             (DocumentExporter) cr.get("gate.corpora.FastInfosetExporter").getInstantiations().iterator().next());
     format2exporter.put("bdocjs",
             (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocJson").getInstantiations().iterator().next());
-    format2exporter.put("bdocsjs",
-            (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocSimpleJson").getInstantiations().iterator().next());
     format2exporter.put("bdocjs.gz",
             (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocJsonGzip").getInstantiations().iterator().next());
-    format2exporter.put("bdocsjs.gz",
-            (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocSimpleJsonGzip").getInstantiations().iterator().next());
     format2exporter.put("bdocmp",
             (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocMsgPack").getInstantiations().iterator().next());
+    format2exporter.put("bdocym",
+            (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocYaml").getInstantiations().iterator().next());
+    format2exporter.put("bdocym.gz",
+            (DocumentExporter) cr.get("gate.plugin.format.bdoc.ExporterBdocYamlGzip").getInstantiations().iterator().next());
 
     // Get the list of all xml files in indir
     List<File> inFiles = bench.fileList(inDir);

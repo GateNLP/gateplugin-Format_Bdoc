@@ -69,3 +69,27 @@ The following formats are supported for loading and saving (all formats are supp
 * As with JSON, shared objects are not preserved and instead converted into separate equal objects. 
 
 
+## Speed and Size comparison with GATE XML and FastInfoset formats
+
+### Single Threaded 
+
+* Benchmark: using SimpleBenchmark class
+* (internal corpus "gatexml")
+* Number of documents: 2015
+* Documents with lots of annotations
+* Number of formats: 7
+* Number of iterations: 3
+* Total number of load/save per doc: 21
+* load/save: average ms per document
+* size: average kB per document
+
+| Format | load | save | size | 
+| ------ | ---- | ---- | ---- | 
+| xml | 0.009 | 0.022 | 0.458 |
+| finf | 0.008 | 0.028 | 0.309 |
+| bdocjs | 0.008 | 0.097 | 0.173 |
+| bdocjs.gz | 0.007 | 0.104 | 0.153 |
+| bdocmp | 0.008 | 0.065 | 0.065 |
+| bdocym | 0.008 | 0.075 | 0.169 |
+| bdocym.gz | 0.007 | 0.092 | 0.152 |
+
