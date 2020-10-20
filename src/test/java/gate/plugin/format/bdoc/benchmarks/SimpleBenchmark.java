@@ -154,7 +154,7 @@ public class SimpleBenchmark {
     Gate.getCreoleRegister().registerPlugin(
             new Plugin.Maven("uk.ac.gate.plugins", "format-fastinfoset", "8.5"));
     Gate.getCreoleRegister().registerPlugin(
-            new Plugin.Maven("uk.ac.gate.plugins", "format-bdoc", "1.3-SNAPSHOT"));
+            new Plugin.Maven("uk.ac.gate.plugins", "format-bdoc", "1.7"));
 
     File inDir = new File(args[0]);
     File outDir = new File(args[1]);
