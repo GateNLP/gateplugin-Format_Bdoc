@@ -93,3 +93,7 @@ The following formats are supported for loading and saving (all formats are supp
 | bdocym | 0.008 | 0.075 | 0.169 |
 | bdocym.gz | 0.007 | 0.092 | 0.152 |
 
+## JavaDocs
+
+See https://javadoc.io/doc/uk.ac.gate.plugins/format-bdoc/latest/index.html
+
