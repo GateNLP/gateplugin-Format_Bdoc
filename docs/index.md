@@ -68,6 +68,43 @@ The following formats are supported for loading and saving (all formats are supp
 * Document is represented in the binary MessagePack format ([https://msgpack.org/index.html](https://msgpack.org/index.html)). This results in very small files. 
 * As with JSON, shared objects are not preserved and instead converted into separate equal objects. 
 
+## ResourceHelper API
+
+The ResourceHelper API allows for a run-time only programmatic use of some of the plugin features without the need
+to make the using code depend on the plugin. Instead the generic [GATE ResourceHelper Interface](https://jenkins.gate.ac.uk/job/gate-core/javadoc/index.html)
+is used to invoke plugin functionality. 
+
+The [`call`](https://javadoc.io/doc/uk.ac.gate.plugins/format-bdoc/latest/gate/plugin/format/bdoc/API.html) method takes the following
+parameters: 
+
+* `action` (String): the name of the action to perform or what should get returned
+* `resource` (gate.Resource): some GATE resource like a Document 
+* `params...` (Object): an arbitrary number of additional objects to pass on
+
+The method returns some Object or null. 
+
+The following `action` values can be used, the expected parameters and their types are listed in parentheses:
+
+* `json_from_doc` (resource: Document):  return a JSON string representation of the document
+* `fmap_to_map` (param0: FeatureMap): return a Map representation of the feature map
+* `bdoc_from_string` (param0: String): return a BdocDocument from the JSON string representation
+* `bdoc_from_doc` (resource: Document): return a BdocDocument from the GATE document
+* `bdocmap_from_doc` (resource: Document, param0: Collection<String> or null, param1: Boolean or null): create 
+  the Map representation of a BdocDocument created from the document, if param0 is specified and it is a collection
+  of Strings, only include the annotation sets with those names in the result. If param1 is present and it is 
+  a boolean that is true, include empty placeholder sets for all sets not included in the result
+* `log_from_string` (param0: String): create ChangeLog from the JSON String representation
+* `log_from_map` (param0: Map<String,Object>): create a ChangeLog from the Map representation 
+* `update_document_from_bdoc` (resource: Document, param0: BdocDocument): update a given GATE document from the 
+  information in a BdocDocument.
+* `update_document_from_bdocjson` (resource: Document, param0: String): update GATE document from the 
+  BdocDocument created from the JSON String
+* `update_document_from_log` (resrouce: Document, param0: ChangeLog): update GATE document from the given
+  ChangeLog
+* `update_document_from_logjson` (resource: Document, param: String): update and return GATE document from
+  the ChangeLog created from the JSON String
+
+
 
 ## Speed and Size comparison with GATE XML and FastInfoset formats
 
