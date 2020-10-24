@@ -23,18 +23,11 @@ package gate.plugin.format.bdoc;
 import gate.Resource;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import gate.creole.AbstractResource;
 import gate.creole.metadata.AutoInstance;
 import gate.creole.metadata.CreoleResource;
-import gate.util.GateRuntimeException;
 
 @CreoleResource(
         name = "FormatBdocVersionLogger",
@@ -46,6 +39,8 @@ import gate.util.GateRuntimeException;
 public class VersionLogger extends AbstractResource {
     protected boolean versionInfoShown = false;
 
+    private static final long serialVersionUID = 77694856473838L;
+    
     /**
      * Our logger instance.
      */
