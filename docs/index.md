@@ -9,13 +9,15 @@ Python and Java of how Unicode strings are represented and allows to convert ann
 the two. 
 
 
-This plugin allows to save and load GATE Documents represented as BasicDocument instances in the following serialization formats (see section Formats below for details):
+This plugin allows to save and load GATE Documents represented as [BasicDocument](bdoc_document.md) instances in the following serialization formats (see section Formats below for details):
 
 * JSON
 * JSON, GZip compressed
 * MessagePack (see [https://msgpack.org/index.html](https://msgpack.org/index.html))
 * YAML (see [https://yaml.org/](https://yaml.org/))
 * YAML, GZip compressed
+
+See [BasicDocument](bdoc_document.md) for a description of the "Basic Document" representation of a GATE document. 
 
 In addition it can load and process `gatenlp` ChangeLog instances (data that represents changes to be made to a GATE document).
 
