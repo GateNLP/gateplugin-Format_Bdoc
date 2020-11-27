@@ -24,6 +24,7 @@ import gate.DocumentContent;
 import gate.FeatureMap;
 import gate.Resource;
 import gate.corpora.DocumentContentImpl;
+import gate.creole.ResourceInstantiationException;
 import gate.creole.metadata.AutoInstance;
 import gate.creole.metadata.CreoleResource;
 import gate.gui.NameBearerHandle;
@@ -33,9 +34,12 @@ import gate.lib.basicdocument.BdocDocumentBuilder;
 import gate.lib.basicdocument.BdocUtils;
 import gate.lib.basicdocument.ChangeLog;
 import gate.lib.basicdocument.GateDocumentUpdater;
+import gate.lib.basicdocument.docformats.Format;
 import gate.lib.basicdocument.docformats.Loader;
 import gate.util.GateRuntimeException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Action;
 
 /**
@@ -86,8 +90,19 @@ public class API extends ResourceHelper {
         return BdocUtils.featureMap2Map(fm, null);
       case "bdoc_from_string":
         json = (String)params[0];
-        bdoc = new Loader().from(json).load_bdoc();
+        bdoc = new Loader().format(Format.JSON_MAP).fromString(json).load_bdoc();
         return bdoc;
+      case "doc_from_json":
+        json = (String)params[0];
+        bdoc = new Loader().format(Format.JSON_MAP).fromString(json).load_bdoc();
+        Document tmpdoc = null;
+        try {
+          tmpdoc = gate.Factory.newDocument(bdoc.text);
+        } catch (ResourceInstantiationException ex) {
+          throw new GateRuntimeException("Could not create GATE document from JSON", ex);
+        }
+        tmpdoc = new GateDocumentUpdater(tmpdoc).fromBdoc(bdoc);
+        return tmpdoc;
       case "bdoc_from_doc":
         gdoc = (Document)resource;
         bdoc = new BdocDocumentBuilder().fromGate(gdoc).buildBdoc();
@@ -111,7 +126,7 @@ public class API extends ResourceHelper {
         return bdoc.toMap();
       case "log_from_string":
         json = (String)params[0];
-        log = new Loader().from(json).load_log();
+        log = new Loader().format(Format.JSON_MAP).fromString(json).load_log();
         return log;      
       case "log_from_map":
         map = (Map<String,Object>)params[0];
@@ -124,7 +139,7 @@ public class API extends ResourceHelper {
       case "update_document_from_bdocjson":        
         gdoc = (Document)resource;
         json = (String)params[0];
-        bdoc = new Loader().from(json).load_bdoc();
+        bdoc = new Loader().format(Format.JSON_MAP).fromString(json).load_bdoc();
         return update_document_from_bdoc(gdoc, bdoc);
       case "update_document_from_log":        
         gdoc = (Document)resource;
@@ -138,7 +153,7 @@ public class API extends ResourceHelper {
       case "update_document_from_logjson":        
         gdoc = (Document)resource;
         json = (String)params[0];
-        log = new Loader().from(json).load_log();
+        log = new Loader().format(Format.JSON_MAP).fromString(json).load_log();
         return update_document_from_log(gdoc, log);
       default:
         throw new GateRuntimeException("Not a known action: "+action);
