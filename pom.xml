@@ -5,7 +5,8 @@
   <name>Format: Bdoc</name>
   <description>
     Plugin to save/load GATE documents in BasicDocument 
-    representation as JSON and Gzip-compressed JSON
+    representation as JSON and Gzip-compressed JSON,
+    YAML, and MessagePack.
   </description>
   <url>https://gatenlp.github.io/gateplugin-Format_Bdoc/</url>
   <organization>
