@@ -19,6 +19,8 @@
  */
 package gate.plugin.format.bdoc;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gate.Document;
 import gate.DocumentContent;
 import gate.FeatureMap;
@@ -38,8 +40,6 @@ import gate.lib.basicdocument.docformats.Format;
 import gate.lib.basicdocument.docformats.Loader;
 import gate.util.GateRuntimeException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Action;
 
 /**
@@ -54,7 +54,8 @@ import javax.swing.Action;
 public class API extends ResourceHelper {
   
   private static final long serialVersionUID = 776874654360368L;
-  
+  private final ObjectMapper om = new ObjectMapper();
+
   private Document update_document_from_bdoc(Document gdoc, BdocDocument bdoc) {
     DocumentContent newContent = new DocumentContentImpl(bdoc.text);
     gdoc.setContent(newContent);
@@ -79,6 +80,7 @@ public class API extends ResourceHelper {
     Document gdoc;
     ChangeLog log;
     String json;
+    Map<String, Map<String, Object>> annsetsmap;    
     Map<String,Object> map;
     switch(action) {
       case "json_from_doc":
@@ -155,6 +157,35 @@ public class API extends ResourceHelper {
         json = (String)params[0];
         log = new Loader().format(Format.JSON_MAP).fromString(json).load_log();
         return update_document_from_log(gdoc, log);
+      case "bdocannsets_from_docanns":
+        // the BDOC Json representation of just the annotation sets 
+        // if there is at least one params, assume it is an annotation specification
+        gdoc = (Document)resource;
+        bdoc = new BdocDocumentBuilder().fromGate(gdoc).buildBdoc();
+        if(params.length > 0) {
+          List<List<String>>annspecs = (List<List<String>>)params[0];
+          annsetsmap = bdoc.annsetsToMap(annspecs);
+        } else {
+          annsetsmap = bdoc.annsetsToMap(null);
+        }
+        return annsetsmap;
+      case "jsonannsets_from_docanns":
+        // the BDOC Json representation of just the annotation sets 
+        // if there is at least one params, assume it is an annotation specification
+        gdoc = (Document)resource;
+        bdoc = new BdocDocumentBuilder().fromGate(gdoc).buildBdoc();
+        if(params.length > 0) {
+          List<List<String>>annspecs = (List<List<String>>)params[0];
+          annsetsmap = bdoc.annsetsToMap(annspecs);
+        } else {
+          annsetsmap = bdoc.annsetsToMap(null);
+        }
+        // for simplicity, we convert to JSON right here!
+        try {
+          return om.writeValueAsString(annsetsmap);
+        } catch(JsonProcessingException ex) {
+          return null;
+        }
       default:
         throw new GateRuntimeException("Not a known action: "+action);
     }

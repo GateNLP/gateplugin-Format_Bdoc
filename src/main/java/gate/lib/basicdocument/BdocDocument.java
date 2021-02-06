@@ -21,8 +21,12 @@
 package gate.lib.basicdocument;
 
 import gate.Document;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -157,6 +161,69 @@ public class BdocDocument
     map.put("text", this.text);
     map.put("name", this.name);
     return map;
+  }
+  
+  /**
+   * Return a map representation of annotation sets from the BdocDocument.
+   * 
+   * If annspecs is null, all annotation sets and types, otherwise restricted
+   * to the annotation sets and types in the annspecs list: each element in 
+   * the list is a list of strings, where the first element is the set to 
+   * include. If the second element is null, all types are included for that 
+   * set, otherwise any elements represent types to include. 
+   * 
+   * @param annspecs annotation specification
+   * @return map representation of the annotation sets
+   */
+  public Map<String, Map<String, Object>> annsetsToMap(List<List<String>> annspecs) {
+    Map<String, Map<String, Object>> ass = new HashMap<>();
+    if (annspecs == null) {
+      for(Map.Entry<String, BdocAnnotationSet> e : this.annotation_sets.entrySet()) {
+        ass.put(e.getKey(), e.getValue().toMap());
+      }    
+    } else {
+      for(List<String> setspec : annspecs) {
+        // if there are not at least two elements, skip
+        if(setspec.size() < 2) {
+          continue;
+        }
+        String setname = setspec.get(0);
+        BdocAnnotationSet bset = this.annotation_sets.getOrDefault(setname, null);
+        if(bset==null) {
+          continue;
+        }
+        if(setspec.get(1) == null) {
+          // include everything from that set
+          Map<String, Object> smap = new HashMap<>();
+          smap.put("annotations", bset.annotations); 
+          smap.put("name", bset.name);
+          smap.put("next_annid", bset.next_annid);
+          ass.put(setname, smap);
+        } else {
+          // include all annotations with types from elements 2 ... k
+          Set<String> anntypes = new HashSet<>();
+          for(int i=1; i<setspec.size(); i++) {
+            anntypes.add(setspec.get(i));
+          }
+          if(anntypes.size() == 0) {
+            continue;
+          }
+          Map<String, Object> smap = new HashMap<>();
+          smap.put("name", bset.name);
+          smap.put("next_annid", bset.next_annid);
+          // now filter the annotations by type
+          List<BdocAnnotation> filteredanns = new ArrayList<>();
+          for(BdocAnnotation ann : bset.annotations) {
+            if(anntypes.contains(ann.type)) {
+              filteredanns.add(ann);
+            }
+          } // end for ann
+          smap.put("annotations", filteredanns);
+          ass.put(setname, smap);
+        }
+      }
+    }
+    return ass;
   }
    
 }

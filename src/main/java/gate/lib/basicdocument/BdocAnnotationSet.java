@@ -79,12 +79,17 @@ public class BdocAnnotationSet {
   public Integer next_annid; 
 
   
+  /**
+   * Convert the annotation set to a Map. 
+   * 
+   * @return  the map representation of the set. 
+   */
   public Map<String, Object> toMap() {
     Map<String, Object> map = new HashMap<>();
     map.put("annotations", this.annotations);
     map.put("name", this.name);
     map.put("next_annid", this.next_annid);
     return map;
-  }
+  }  
   
 }
