@@ -43,7 +43,7 @@ Gate.init()
 Gate.getCreoleRegister().registerPlugin(
             new Plugin.Maven("uk.ac.gate.plugins", "format-fastinfoset", "8.5"));
 Gate.getCreoleRegister().registerPlugin(
-            new Plugin.Maven("uk.ac.gate.plugins", "format-bdoc", "1.10-SNAPSHOT"));
+            new Plugin.Maven("uk.ac.gate.plugins", "format-bdoc", "1.10"));
 cr = Gate.getCreoleRegister()
 
 fmt2exp = [:]
